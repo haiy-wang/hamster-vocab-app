@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐹 弯弯单词小语伴</title>
+    <title>🐹 仓鼠单词小语伴</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Zcool+KuaiLe&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
 
     <div class="app-container">
         <header>
-            <h1>🐹 仓鼠单词</h1>
+            <h1>🐹 仓鼠单词本</h1>
             <div class="mode-switch-container">
                 <button id="mode-toggle-btn" class="mode-btn study-active">
                     <span id="mode-text">📚 学习模式</span>
@@ -36,6 +36,7 @@
             <div class="divider"></div>
 
             <div id="slots-container" class="slots-container hidden">
+                <input type="text" id="exam-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                 </div>
 
             <div id="definition-section" class="definition-box hidden">
@@ -51,7 +52,7 @@
 
             <div id="typing-section" class="typing-area">
                 <div class="input-wrapper">
-                    <input type="text" id="user-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                    <input type="text" id="study-input" placeholder="试着拼写一下..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                 </div>
                 <button id="check-btn">提交</button>
             </div>
@@ -72,6 +73,4 @@
 
     <script src="script.js"></script>
 </body>
-
 </html>
-
