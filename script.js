@@ -150,10 +150,10 @@ const wordList = [
 ];
 
 // 2. 状态变量
-let currentWordIndex = 0; 
-let unlearnedIndices = Array.from(Array(wordList.length).keys()); 
+let currentWordIndex = 0;
+let unlearnedIndices = Array.from(Array(wordList.length).keys());
 const totalWords = wordList.length;
-let isExamMode = false; 
+let isExamMode = false;
 
 // 3. 获取 DOM 元素
 const currentWordEl = document.getElementById('current-word');
@@ -166,8 +166,7 @@ const knowBtn = document.getElementById('know-btn');
 const dontKnowBtn = document.getElementById('dont-know-btn');
 const resetBtn = document.getElementById('reset-btn');
 const progressInfoEl = document.getElementById('progress-info');
-const playAudioBtn = document.getElementById('play-audio-btn'); 
-const userInput = document.getElementById('user-input');
+const playAudioBtn = document.getElementById('play-audio-btn');
 const checkBtn = document.getElementById('check-btn');
 const feedbackMessage = document.getElementById('feedback-message');
 const learningControls = document.getElementById('learning-controls');
@@ -178,26 +177,41 @@ const slotsContainer = document.getElementById('slots-container');
 const modeToggleBtn = document.getElementById('mode-toggle-btn');
 const modeText = document.getElementById('mode-text');
 
+// 双输入框
+const examInput = document.getElementById('exam-input');
+const studyInput = document.getElementById('study-input');
+
 // --- ⚙️ 模式切换功能 ---
 function toggleMode() {
-    isExamMode = !isExamMode; 
-    userInput.value = ''; // 切换时清空输入
+    isExamMode = !isExamMode;
+    
+    // 清空两个输入框
+    examInput.value = '';
+    studyInput.value = '';
 
     if (isExamMode) {
         modeToggleBtn.classList.remove('study-active');
         modeToggleBtn.classList.add('exam-active');
         modeText.textContent = "📝 考试模式";
         showHideBtn.textContent = "🏳️ 我放弃 (看答案)";
+        
+        // CSS 控制底部的输入框隐藏
         typingSection.classList.add('exam-mode-input');
+        
+        // 自动聚焦考试输入框
+        setTimeout(() => {
+            examInput.focus();
+        }, 100);
     } else {
         modeToggleBtn.classList.remove('exam-active');
         modeToggleBtn.classList.add('study-active');
         modeText.textContent = "📚 学习模式";
         showHideBtn.textContent = "👀 偷看答案";
+        
         typingSection.classList.remove('exam-mode-input');
     }
 
-    loadWord(); 
+    loadWord();
 }
 
 // --- 🔊 音频播放 ---
@@ -205,16 +219,19 @@ function playAudio() {
     if (unlearnedIndices.length > 0 || isExamMode) {
         const wordToSpeak = wordList[currentWordIndex].word;
         const utterance = new SpeechSynthesisUtterance(wordToSpeak);
-        utterance.lang = 'en-US'; 
-        utterance.rate = 0.8; 
-        window.speechSynthesis.cancel(); 
+        utterance.lang = 'en-US';
+        utterance.rate = 0.8;
+        window.speechSynthesis.cancel();
         window.speechSynthesis.speak(utterance);
     }
 }
 
 // --- 🔡 渲染下划线 ---
 function renderSlots() {
-    slotsContainer.innerHTML = '';
+    slotsContainer.innerHTML = ''; 
+    // 重新把 examInput 放回去，因为 innerHTML = '' 会清空它
+    slotsContainer.appendChild(examInput);
+    
     const targetWord = wordList[currentWordIndex].word;
 
     for (let i = 0; i < targetWord.length; i++) {
@@ -230,141 +247,118 @@ function renderSlots() {
     }
 }
 
-// --- ⌨️ 核心修复：输入同步与光标控制 (解决手机端问题) ---
-
-// 辅助函数：更新界面显示
+// --- 辅助：更新 Slots UI ---
 function updateSlotsUI(currentVal) {
-    const allSlots = slotsContainer.children;
-    let charIndex = 0;
+    const allChildren = Array.from(slotsContainer.children);
+    // 过滤掉 input，只找 span
+    const allSlots = allChildren.filter(el => el.tagName === 'SPAN');
     
-    // 遍历输入值，填入格子
-    // 注意：我们需要跳过 DOM 中的 .space-slot
-    let domIndex = 0;
-    for (let i = 0; i < currentVal.length; i++) {
-        // 找到下一个 char-slot
-        while(domIndex < allSlots.length && !allSlots[domIndex].classList.contains('char-slot')) {
-            domIndex++;
-        }
-        if (domIndex < allSlots.length) {
-            allSlots[domIndex].textContent = currentVal[i]; // 原样显示（小写）
-            allSlots[domIndex].classList.remove('active');
-            domIndex++;
-        }
-    }
+    let charIndex = 0; // 对应 currentVal 的字符指针
     
-    // 清空剩余的格子
-    while (domIndex < allSlots.length) {
-        if (allSlots[domIndex].classList.contains('char-slot')) {
-            allSlots[domIndex].textContent = '';
-            allSlots[domIndex].classList.remove('active');
-        }
-        domIndex++;
-    }
-
-    // 设置高亮光标 (找到下一个要输入的空格子)
-    let cursorSlotIndex = 0;
-    let actualCharsFilled = 0;
-    // 计算当前输入了多少个有效字符(非空格)
-    // 简单起见，我们重新遍历一遍找光标
-    domIndex = 0;
-    // 略过已填写的
-    // 为了简单，我们直接把光标设在 currentVal.length 对应的下一个有效格子
-    // 但因为 currentVal 包含空格，逻辑比较复杂。
-    // 简化方案：根据 input 长度高亮
-    
-    // 重置所有高亮
-    for(let s of allSlots) s.classList.remove('active');
-    
-    // 找到第 currentVal.length 个 char-slot (如果存在)
-    // 注意：wordList 里的空格在 input 里也算一个字符
-    // 所以直接找 allSlots 里的第 N 个元素即可？不对，allSlots 包含 space-slot
-    
-    // 重新映射：input 索引 -> DOM 索引
-    if (currentVal.length < allSlots.length) {
-        // 检查当前位置是否是空格，如果是，光标应该在下一个
-        let activeIndex = currentVal.length;
-        if (allSlots[activeIndex] && allSlots[activeIndex].classList.contains('space-slot')) {
-            // 如果光标落在空格上，UI上应该高亮空格后面的那个字母格
-             activeIndex++;
-        }
+    for (let i = 0; i < allSlots.length; i++) {
+        const slot = allSlots[i];
         
-        if (allSlots[activeIndex] && allSlots[activeIndex].classList.contains('char-slot')) {
-            allSlots[activeIndex].classList.add('active');
+        // 清除旧高亮
+        slot.classList.remove('active');
+        
+        if (slot.classList.contains('char-slot')) {
+            // 获取当前应该显示的字符
+            const char = currentVal[charIndex] || '';
+            slot.textContent = char; // 显示小写
+            
+            // 如果这是刚才输入的那个字符，或者即将输入的，高亮它
+            if (charIndex === currentVal.length) {
+                slot.classList.add('active');
+            }
+            
+            charIndex++;
+        } else if (slot.classList.contains('space-slot')) {
+            // 如果遇到空格，currentVal 里也应该有一个空格
+            charIndex++;
+        }
+    }
+    
+    // 如果已经输完了，保持最后一个不高亮或者全绿（由 checkTyping 处理）
+    // 如果还没输完，高亮下一个待输入的位置
+    if (currentVal.length < allSlots.length) {
+        // 重新找光标
+        // 简单逻辑：找到第 currentVal.length 个元素
+        if (allSlots[currentVal.length]) {
+             // 如果下一个是空格，跳过，高亮空格后面那个
+             if (allSlots[currentVal.length].classList.contains('space-slot')) {
+                 if (allSlots[currentVal.length + 1]) {
+                     allSlots[currentVal.length + 1].classList.add('active');
+                 }
+             } else {
+                 allSlots[currentVal.length].classList.add('active');
+             }
         }
     }
 }
 
-userInput.addEventListener('input', function(e) {
-    if (!isExamMode) return;
-
+// --- ⌨️ 考试输入框逻辑 (核心修复) ---
+examInput.addEventListener('input', function(e) {
     const targetWord = wordList[currentWordIndex].word;
     let currentVal = this.value;
-    
-    // 1. 获取输入类型 (是打字还是删除?)
     const isDeleting = e.inputType && e.inputType.includes('delete');
 
-    // 2. 自动跳过空格逻辑
-    // 只有在“非删除”且未输完的情况下检查
+    // 1. 自动跳过空格
     if (!isDeleting && currentVal.length < targetWord.length) {
-        // 如果目标单词当前位置是空格
         if (targetWord[currentVal.length] === ' ') {
-            currentVal += ' '; // 自动追加一个空格
-            this.value = currentVal; // 更新输入框
+            currentVal += ' ';
+            this.value = currentVal;
         }
     }
     
-    // 3. 强制光标移动到最后 (这是解决手机端乱序的关键！)
-    // 手机端光标容易自动跳回0，这里强制把它按在最后
+    // 2. 强制光标归位 (解决手机乱序)
     try {
         this.setSelectionRange(currentVal.length, currentVal.length);
-    } catch (err) {
-        // 忽略旧浏览器错误
-    }
+    } catch (err) {}
 
-    // 4. 更新界面
+    // 3. 更新 UI
     updateSlotsUI(currentVal);
 });
 
-// 单独处理回退键 (防止在空格处卡住)
-userInput.addEventListener('keydown', function(e) {
-    if (!isExamMode) return;
-    
+// 处理回退 (Backsapce 连删空格)
+examInput.addEventListener('keydown', function(e) {
     if (e.key === 'Backspace') {
         let currentVal = this.value;
-        const targetWord = wordList[currentWordIndex].word;
-        
-        // 如果当前光标前面是一个空格 (且不是刚开始)，说明是自动填入的，连空格带前面的字一起删
-        // 比如 "post " -> 按删除 -> 删掉空格变为 "post" -> 再自动删掉 "t" -> "pos"
-        // 或者简单点：如果末尾是空格，就多删一位
         if (currentVal.length > 0 && currentVal.endsWith(' ')) {
-             e.preventDefault(); // 阻止默认删除
-             this.value = currentVal.slice(0, -2); // 删掉 空格+前一个字母
+             e.preventDefault();
+             this.value = currentVal.slice(0, -2); // 删空格+前一字
              updateSlotsUI(this.value);
-             // 也要修正光标
-             try { this.setSelectionRange(this.value.length, this.value.length); } catch(err){}
+             try { this.setSelectionRange(this.value.length, this.value.length); } catch(err) {}
         }
     }
+    if (e.key === 'Enter') checkTyping();
+});
+
+// 学习模式输入框
+studyInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') checkTyping();
 });
 
 
 // --- 📝 检查答案 ---
 function checkTyping() {
     const correctWord = wordList[currentWordIndex].word.toLowerCase().trim();
-    const userAnswer = userInput.value.toLowerCase().trim();
+    
+    // 动态获取当前活跃的输入框值
+    const activeInput = isExamMode ? examInput : studyInput;
+    const userAnswer = activeInput.value.toLowerCase().trim();
 
     if (userAnswer === correctWord) {
+        // --- 答对了 ---
         feedbackMessage.textContent = "✨ 答对啦！太棒了！ ✨";
         feedbackMessage.className = 'feedback correct';
         
         if (isExamMode) {
-            const allSlots = slotsContainer.children;
-            for(let i=0; i<allSlots.length; i++) {
-                if(allSlots[i].classList.contains('char-slot')) {
-                   // 显示正确答案并变绿
-                   allSlots[i].textContent = wordList[currentWordIndex].word[i]; // 保持原大小写
-                   allSlots[i].style.borderColor = '#66bb6a';
-                   allSlots[i].style.color = '#66bb6a';
-                }
+            // 填满正确答案
+            const spans = slotsContainer.querySelectorAll('span.char-slot');
+            for(let i=0; i<spans.length; i++) {
+                spans[i].textContent = correctWord[i]; // 确保显示
+                spans[i].style.borderColor = '#66bb6a';
+                spans[i].style.color = '#66bb6a';
             }
             phoneticsEl.style.visibility = 'visible';
             playAudioBtn.style.visibility = 'visible';
@@ -378,23 +372,29 @@ function checkTyping() {
         }, 1200);
         
     } else {
+        // --- 答错了 ---
         feedbackMessage.textContent = "💨 不对哦，再试一次！";
         feedbackMessage.className = 'feedback incorrect';
         
         if(isExamMode) {
-             const slots = slotsContainer.querySelectorAll('.char-slot');
-             slots.forEach(s => s.style.borderColor = '#ef5350');
+             const spans = slotsContainer.querySelectorAll('span.char-slot');
+             spans.forEach(s => s.style.borderColor = '#ef5350');
              setTimeout(() => {
-                 slots.forEach(s => s.style.borderColor = '');
+                 spans.forEach(s => s.style.borderColor = '');
              }, 500);
+             // 错误时聚焦并把光标放最后
+             examInput.focus();
+             try{ examInput.setSelectionRange(examInput.value.length, examInput.value.length); }catch(e){}
+        } else {
+             studyInput.focus();
         }
-        userInput.focus();
     }
 }
 
 // --- 核心逻辑：加载单词 ---
 function loadWord() {
-    userInput.value = '';
+    examInput.value = '';
+    studyInput.value = '';
     feedbackMessage.textContent = '';
     feedbackMessage.className = 'feedback';
     
@@ -408,7 +408,6 @@ function loadWord() {
     resetBtn.classList.add('hidden');
 
     const currentWordData = wordList[currentWordIndex];
-
     chineseDefinitionEl.textContent = currentWordData.chinese;
     exampleSentenceEl.textContent = currentWordData.example;
     
@@ -416,10 +415,11 @@ function loadWord() {
     progressInfoEl.textContent = `🐹 进度: ${learnedCount} / ${totalWords} (剩余: ${unlearnedIndices.length})`;
 
     if (isExamMode) {
+        // 考试模式
         currentWordEl.style.display = 'none';
         slotsContainer.classList.remove('hidden');
         renderSlots();
-        updateSlotsUI(''); // 初始化高亮
+        updateSlotsUI(''); // 重置高亮
 
         phoneticsEl.style.visibility = 'hidden'; 
         playAudioBtn.style.visibility = 'hidden';
@@ -427,17 +427,19 @@ function loadWord() {
         exampleBox.classList.add('hidden'); 
         feedbackBtns.classList.add('hidden');
         
-        // 自动聚焦
+        // 聚焦
         setTimeout(() => {
-            userInput.focus();
-            try { userInput.setSelectionRange(0, 0); } catch(e){}
+            examInput.focus();
         }, 100);
 
     } else {
+        // 学习模式
         currentWordEl.style.display = 'block';
         currentWordEl.textContent = currentWordData.word;
         phoneticsEl.textContent = currentWordData.phonetics;
+        
         slotsContainer.classList.add('hidden');
+
         phoneticsEl.style.visibility = 'visible';
         playAudioBtn.style.visibility = 'visible';
         definitionSectionEl.classList.add('hidden');
@@ -446,7 +448,6 @@ function loadWord() {
     }
 }
 
-// --- 状态与切换逻辑 (保持不变) ---
 function finishLearning() {
     currentWordEl.style.display = 'block';
     currentWordEl.textContent = "🎉 通关！";
@@ -476,10 +477,7 @@ function toggleDefinition() {
         phoneticsEl.style.visibility = 'visible';
         playAudioBtn.style.visibility = 'visible';
         feedbackMessage.textContent = "下次一定行！";
-        
-        setTimeout(() => {
-            handleDontKnow(); 
-        }, 2000);
+        setTimeout(() => { handleDontKnow(); }, 2000);
     } else {
         definitionSectionEl.classList.toggle('hidden');
     }
@@ -488,17 +486,13 @@ function toggleDefinition() {
 function handleKnow() {
     if (unlearnedIndices.length > 0) {
         const indexToRemove = unlearnedIndices.indexOf(currentWordIndex);
-        if (indexToRemove > -1) {
-            unlearnedIndices.splice(indexToRemove, 1); 
-        }
+        if (indexToRemove > -1) { unlearnedIndices.splice(indexToRemove, 1); }
     }
     nextRandomWord();
 }
 
 function handleDontKnow() {
-    if (!isExamMode) {
-        definitionSectionEl.classList.remove('hidden');
-    }
+    if (!isExamMode) { definitionSectionEl.classList.remove('hidden'); }
     nextRandomWord();
 }
 
@@ -517,14 +511,8 @@ resetBtn.addEventListener('click', resetLearning);
 playAudioBtn.addEventListener('click', playAudio);
 checkBtn.addEventListener('click', checkTyping);
 
-userInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        checkTyping();
-    }
-});
-
 slotsContainer.addEventListener('click', () => {
-    userInput.focus();
+    examInput.focus();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
