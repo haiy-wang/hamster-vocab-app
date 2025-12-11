@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐹 弯弯单词小语伴</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Zcool+KuaiLe&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="app-container">
+        <header>
+            <h1>🐹 仓鼠单词本</h1>
+            <div class="mode-switch-container">
+                <button id="mode-toggle-btn" class="mode-btn study-active">
+                    <span id="mode-text">📚 学习模式</span>
+                </button>
+            </div>
+            <p class="progress-badge" id="progress-info">加载中...</p>
+        </header>
+
+        <div id="word-card" class="word-card">
+            
+            <div class="word-header">
+                <h2 id="current-word">Loading...</h2>
+                <button id="play-audio-btn" class="icon-btn" title="听听发音">🔊</button>
+            </div>
+            
+            <p id="phonetics" class="phonetics-badge">/ ... /</p>
+
+            <div class="divider"></div>
+
+            <div id="slots-container" class="slots-container hidden">
+                </div>
+
+            <div id="definition-section" class="definition-box hidden">
+                <div class="def-item" id="chinese-box">
+                    <span class="tag">中文</span>
+                    <p id="chinese-definition"></p>
+                </div>
+                <div class="def-item" id="example-box">
+                    <span class="tag">例句</span>
+                    <p id="example-sentence"></p>
+                </div>
+            </div>
+
+            <div id="typing-section" class="typing-area">
+                <div class="input-wrapper">
+                    <input type="text" id="user-input" autocomplete="off" spellcheck="false">
+                </div>
+                <button id="check-btn">提交</button>
+            </div>
+            <p id="feedback-message" class="feedback"></p>
+        </div>
+
+        <div class="controls-container">
+            <div id="learning-controls" class="learning-controls">
+                <button id="show-hide-btn" class="action-btn secondary">👀 偷看答案</button>
+                <div class="feedback-btns" id="feedback-btns">
+                    <button id="dont-know-btn" class="action-btn danger">❌ 还不熟</button>
+                    <button id="know-btn" class="action-btn success">✔️ 记住啦</button>
+                </div>
+            </div>
+            <button id="reset-btn" class="action-btn primary hidden">🔄 再来一轮！</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
