@@ -209,7 +209,6 @@ function toggleMode() {
         modeText.textContent = "📝 考试模式";
         showHideBtn.textContent = "🏳️ 我放弃 (看答案)";
         typingSection.classList.add('exam-mode-input');
-        setTimeout(() => { examInput.focus(); }, 100);
     } else {
         modeToggleBtn.classList.remove('exam-active');
         modeToggleBtn.classList.add('study-active');
@@ -222,7 +221,7 @@ function toggleMode() {
 
 // --- 🔊 音频播放 ---
 function playAudio() {
-    if (unlearnedIndices.length > 0 || isExamMode) {
+    if (unlearnedIndices.length > 0) { // 仅当还有单词时才播放
         const wordToSpeak = wordList[currentWordIndex].word;
         const utterance = new SpeechSynthesisUtterance(wordToSpeak);
         utterance.lang = 'en-US';
@@ -273,9 +272,11 @@ function updateSlotsUI(currentVal) {
         }
     }
     
+    // 修正光标位置
     if (currentVal.length < allSlots.length) {
         if (allSlots[currentVal.length]) {
              if (allSlots[currentVal.length].classList.contains('space-slot')) {
+                 // 如果光标位置是空格，尝试将光标移动到下一个字符槽
                  if (allSlots[currentVal.length + 1]) {
                      allSlots[currentVal.length + 1].classList.add('active');
                  }
@@ -292,6 +293,7 @@ examInput.addEventListener('input', function(e) {
     let currentVal = this.value;
     const isDeleting = e.inputType && e.inputType.includes('delete');
 
+    // 处理复合词的空格自动填充
     if (!isDeleting && currentVal.length < targetWord.length) {
         if (targetWord[currentVal.length] === ' ') {
             currentVal += ' ';
@@ -305,8 +307,11 @@ examInput.addEventListener('input', function(e) {
 examInput.addEventListener('keydown', function(e) {
     if (e.key === 'Backspace') {
         let currentVal = this.value;
+        // 如果当前字符是空格，则回退两个字符 (即删除字符和前面的空格)
         if (currentVal.length > 0 && currentVal.endsWith(' ')) {
              e.preventDefault();
+             // 注意：这里我们应该删除空格前的那个字符。但为了简化复合词逻辑，通常只删除空格本身。
+             // 如果要处理复杂的复合词，可能需要更精细的逻辑。此处沿用原逻辑：删除上一个字符（即空格前的字母）
              this.value = currentVal.slice(0, -2);
              updateSlotsUI(this.value);
              try { this.setSelectionRange(this.value.length, this.value.length); } catch(err) {}
@@ -332,10 +337,15 @@ function checkTyping() {
         if (isExamMode) {
             const spans = slotsContainer.querySelectorAll('span.char-slot');
             for(let i=0; i<spans.length; i++) {
-                spans[i].textContent = correctWord[i];
-                spans[i].style.borderColor = '#66bb6a';
-                spans[i].style.color = '#66bb6a';
+                // 如果是复合词，答案可能包含空格，这里只更新字母槽
+                const char = correctWord[i];
+                if (char !== ' ') {
+                    spans[i].textContent = char;
+                    spans[i].style.borderColor = '#66bb6a';
+                    spans[i].style.color = '#66bb6a';
+                }
             }
+            phoneticsEl.textContent = wordList[currentWordIndex].phonetics;
             phoneticsEl.style.visibility = 'visible';
             playAudioBtn.style.visibility = 'visible';
             playAudio(); 
@@ -363,53 +373,90 @@ function checkTyping() {
     }
 }
 
-// --- 核心逻辑：加载单词 ---
-function loadWord() {
+// --- 辅助函数：渲染公共信息 (两种模式都需要的) ---
+function renderCommonInfo(wordData) {
     examInput.value = '';
     studyInput.value = '';
     feedbackMessage.textContent = '';
     feedbackMessage.className = 'feedback';
     
-    // 检查进度
+    // 更新中文释义和例句 (两种模式都可能用到)
+    chineseDefinitionEl.textContent = wordData.chinese;
+    exampleSentenceEl.textContent = wordData.example;
+    
+    // 更新进度条
+    const learnedCount = totalWords - unlearnedIndices.length;
+    progressInfoEl.textContent = `🐹 进度: ${learnedCount} / ${totalWords} (剩余: ${unlearnedIndices.length})`;
+    
+    // 控制通用UI状态
+    learningControls.classList.remove('hidden');
+    typingSection.classList.remove('hidden');
+    resetBtn.classList.add('hidden');
+    playAudioBtn.classList.remove('hidden');
+}
+
+// --- 辅助函数：渲染学习模式 (Study Mode) ---
+function renderStudyMode(wordData) {
+    currentWordEl.style.display = 'block';
+    currentWordEl.textContent = wordData.word;
+    phoneticsEl.textContent = wordData.phonetics;
+    
+    // 隐藏考试模式元素
+    slotsContainer.classList.add('hidden');
+    
+    // 显示学习模式元素
+    phoneticsEl.style.visibility = 'visible';
+    playAudioBtn.style.visibility = 'visible';
+    definitionSectionEl.classList.add('hidden'); // 默认隐藏释义
+    exampleBox.classList.remove('hidden');
+    feedbackBtns.classList.remove('hidden');
+    
+    studyInput.focus();
+}
+
+// --- 辅助函数：渲染考试模式 (Exam Mode) ---
+function renderExamMode(wordData) {
+    currentWordEl.style.display = 'none'; // 隐藏单词本身
+    
+    // 渲染下划线
+    slotsContainer.classList.remove('hidden');
+    renderSlots();
+    updateSlotsUI(''); 
+    
+    // 隐藏学习模式元素
+    phoneticsEl.style.visibility = 'hidden'; // 隐藏音标
+    playAudioBtn.style.visibility = 'hidden'; // 隐藏播放按钮
+    exampleBox.classList.add('hidden'); // 隐藏例句
+    feedbackBtns.classList.add('hidden'); // 隐藏“记住/不熟”按钮
+
+    // 默认显示释义
+    definitionSectionEl.classList.remove('hidden'); 
+
+    // 自动聚焦到考试输入框
+    setTimeout(() => { examInput.focus(); }, 100);
+}
+
+// --- 核心逻辑：加载单词 (重构后) ---
+function loadWord() {
+    // 1. 检查是否通关
     if (unlearnedIndices.length === 0) {
         finishLearning();
         return;
     }
-    
-    learningControls.classList.remove('hidden');
-    typingSection.classList.remove('hidden');
-    resetBtn.classList.add('hidden');
 
     const currentWordData = wordList[currentWordIndex];
-    chineseDefinitionEl.textContent = currentWordData.chinese;
-    exampleSentenceEl.textContent = currentWordData.example;
-    
-    const learnedCount = totalWords - unlearnedIndices.length;
-    progressInfoEl.textContent = `🐹 进度: ${learnedCount} / ${totalWords} (剩余: ${unlearnedIndices.length})`;
 
+    // 2. 渲染公共信息
+    renderCommonInfo(currentWordData);
+
+    // 3. 根据模式渲染特定UI
     if (isExamMode) {
-        currentWordEl.style.display = 'none';
-        slotsContainer.classList.remove('hidden');
-        renderSlots();
-        updateSlotsUI(''); 
-        phoneticsEl.style.visibility = 'hidden'; 
-        playAudioBtn.style.visibility = 'hidden';
-        definitionSectionEl.classList.remove('hidden');
-        exampleBox.classList.add('hidden'); 
-        feedbackBtns.classList.add('hidden');
-        setTimeout(() => { examInput.focus(); }, 100);
+        renderExamMode(currentWordData);
     } else {
-        currentWordEl.style.display = 'block';
-        currentWordEl.textContent = currentWordData.word;
-        phoneticsEl.textContent = currentWordData.phonetics;
-        slotsContainer.classList.add('hidden');
-        phoneticsEl.style.visibility = 'visible';
-        playAudioBtn.style.visibility = 'visible';
-        definitionSectionEl.classList.add('hidden');
-        exampleBox.classList.remove('hidden');
-        feedbackBtns.classList.remove('hidden');
+        renderStudyMode(currentWordData);
     }
 }
+
 
 // --- 🎉 新功能：通关撒花 ---
 function triggerConfetti() {
@@ -468,14 +515,25 @@ function nextRandomWord() {
 
 function toggleDefinition() {
     if (isExamMode) {
+        // 考试模式下点击“放弃”，展示答案并标记为不熟
         currentWordEl.style.display = 'block';
         currentWordEl.textContent = wordList[currentWordIndex].word;
-        slotsContainer.classList.add('hidden');
+
+        phoneticsEl.textContent = wordList[currentWordIndex].phonetics;
         phoneticsEl.style.visibility = 'visible';
+
         playAudioBtn.style.visibility = 'visible';
+        slotsContainer.classList.add('hidden');
+
         feedbackMessage.textContent = "下次一定行！";
-        setTimeout(() => { handleDontKnow(); }, 2000);
+        
+        // 🚀 新增：自动播放单词音频
+        playAudio(); 
+        
+        // 🚀 修改：增加答案显示时长到 6 秒
+        setTimeout(() => { handleDontKnow(); }, 6000); 
     } else {
+        // 学习模式下点击“偷看”，切换释义的显示/隐藏状态
         definitionSectionEl.classList.toggle('hidden');
     }
 }
