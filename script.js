@@ -1,172 +1,60 @@
-// 1. 单词库 (这里只放几个作为示例，请把你的147个单词完整列表放进去)
-const wordList = [
-    { word: "ask", chinese: "问", example: "I want to ask you a question.", phonetics: "/ɑːsk/" },
-    { word: "sir", chinese: "(对男子的礼貌称呼)先生", example: "Excuse me, sir, where is the bank?", phonetics: "/səː(r)/" },
-    { word: "interesting", chinese: "有趣的", example: "This book is very interesting.", phonetics: "/ˈɪntrəstɪŋ/" },
-    { word: "Italian", chinese: "意大利的", example: "My friend cooks delicious Italian food.", phonetics: "/ɪˈtæliən/" },
-    { word: "restaurant", chinese: "餐馆", example: "Let’s have dinner at that new restaurant.", phonetics: "/ˈrestərɒnt/" },
-    { word: "pizza", chinese: "比萨饼", example: "We ate a big pizza for lunch.", phonetics: "/ˈpiːtsə/" },
-    { word: "street", chinese: "大街；街道", example: "There are many trees on this street.", phonetics: "/striːt/" },
-    { word: "get", chinese: "得到；到达", example: "Did you get my email yesterday?", phonetics: "/ɡet/" },
-    { word: "GPS", chinese: "全球（卫星）定位系统", example: "I used the GPS to find the hotel.", phonetics: "/ˌdʒiː piː ˈes/" },
-    { word: "turn", chinese: "转弯", example: "Turn right at the next corner, please.", phonetics: "/tɜːn/" },
-    { word: "left", chinese: "左", example: "The supermarket is on the left.", phonetics: "/left/" },
-    { word: "straight", chinese: "笔直地", example: "Walk straight for five minutes and you will see it.", phonetics: "/streɪt/" },
-    { word: "right", chinese: "右", example: "Your answer is right, well done.", phonetics: "/raɪt/" },
-    { word: "science", chinese: "科学", example: "Science is my favorite subject at school.", phonetics: "/ˈsaɪəns/" },
-    { word: "museum", chinese: "博物馆", example: "We visited a history museum last Sunday.", phonetics: "/mjuːˈziːəm/" },
-    { word: "post office", chinese: "邮局", example: "I went to the post office to send a letter.", phonetics: "/pəʊst ˈɒfɪs/" },
-    { word: "bookstore", chinese: "书店", example: "There is a big bookstore near my home.", phonetics: "/ˈbʊkstɔː(r)/" },
-    { word: "cinema", chinese: "电影院", example: "Let’s go to the cinema this weekend.", phonetics: "/ˈsɪnəmɑː/" },
-    { word: "hospital", chinese: "医院", example: "He is sick and must go to the hospital.", phonetics: "/ˈhɒspɪtl/" },
-    { word: "crossing", chinese: "十字路口", example: "Be careful when you walk across the crossing.", phonetics: "/ˈkrɒsɪŋ/" },
-    { word: "gave", chinese: "(give 的过去式)提供；交给", example: "She gave me a beautiful postcard.", phonetics: "/ɡeɪv/" },
-    { word: "feature", chinese: "特点", example: "The big window is a special feature of this house.", phonetics: "/ˈfiːtʃə(r)/" },
-    { word: "follow", chinese: "沿着", example: "Please follow me to the classroom.", phonetics: "/ˈfɒləʊ/" },
-    { word: "far", chinese: "远的", example: "My school is not far from my home.", phonetics: "/fɑː(r)/" },
-    { word: "tell", chinese: "告诉", example: "Can you tell me your name?", phonetics: "/tel/" },
-    { word: "Mrs", chinese: "夫人", example: "Mrs Wang is our English teacher.", phonetics: "/ˈmɪsɪz/" },
-    { word: "early", chinese: "早期的", example: "He gets up very early every morning.", phonetics: "/ˈɜːli/" },
-    { word: "on foot", chinese: "步行", example: "We went to the park on foot.", phonetics: "/ɒn fʊt/" },
-    { word: "by bus", chinese: "(表示方式)乘", example: "My father goes to work by bus.", phonetics: "/baɪ bʌs/" }, // 注意：这里将 /bai/ 结合了 bus 
-    { word: "bus", chinese: "公共汽车", example: "The bus is full of people.", phonetics: "/bʌs/" },
-    { word: "plane", chinese: "飞机", example: "They took a plane to Germany.", phonetics: "/pleɪn/" },
-    { word: "taxi", chinese: "出租汽车", example: "We took a taxi to the hotel.", phonetics: "/ˈtæksi/" },
-    { word: "ship", chinese: "(大)船", example: "The ship is sailing across the sea.", phonetics: "/ʃɪp/" },
-    { word: "subway", chinese: "地铁", example: "I go to the city center by subway.", phonetics: "/ˈsʌbweɪ/" },
-    { word: "train", chinese: "火车", example: "The train leaves at seven o’clock.", phonetics: "/treɪn/" },
-    { word: "helmet", chinese: "头盔", example: "You must wear a helmet when you ride a bike.", phonetics: "/ˈhelmɪt/" },
-    { word: "must", chinese: "必须", example: "You must do your homework every day.", phonetics: "/mʌst/" },
-    { word: "wear", chinese: "戴", example: "He always wears a hat in winter.", phonetics: "/weə(r)/" },
-    { word: "attention", chinese: "注意", example: "The teacher asked us to pay attention.", phonetics: "/əˈtenʃən/" },
-    { word: "pay attention to", chinese: "注意", example: "Please pay attention to the traffic lights.", phonetics: "/peɪ əˈtenʃən tuː/" },
-    { word: "traffic", chinese: "交通", example: "There is heavy traffic in the morning.", phonetics: "/ˈtræfɪk/" },
-    { word: "traffic lights", chinese: "交通信号灯", example: "Wait for the green traffic lights.", phonetics: "/ˈtræfɪk laɪts/" },
-    { word: "slow", chinese: "慢的", example: "The car is too slow on this road.", phonetics: "/sləʊ/" },
-    { word: "down", chinese: "减少；降低", example: "The price of apples is going down.", phonetics: "/daʊn/" },
-    { word: "slow down", chinese: "减速", example: "Please slow down near the school.", phonetics: "/sləʊ daʊn/" },
-    { word: "stop", chinese: "停下", example: "The bus will stop at the next crossing.", phonetics: "/stɒp/" },
-    { word: "Munich", chinese: "慕尼黑（德国城市）", example: "They live in Munich with their family.", phonetics: "/ˈmjuːnɪk/" },
-    { word: "Germany", chinese: "德国", example: "Germany is a country in Europe.", phonetics: "/ˈdʒɜːməni/" },
-    { word: "Alaska", chinese: "阿拉斯加州（美国）", example: "Alaska is very cold in winter.", phonetics: "/əˈlæskə/" },
-    { word: "sled", chinese: "雪橇", example: "The children are riding a sled in the snow.", phonetics: "/sled/" },
-    { word: "fast", chinese: "快的", example: "That car is very fast.", phonetics: "/fɑːst/" },
-    { word: "ferry", chinese: "渡船", example: "We took a ferry to the island.", phonetics: "/ˈferi/" },
-    { word: "Papa Westray", chinese: "帕帕韦斯特雷岛", example: "The flight to Papa Westray is very short.", phonetics: "/ˈpæpə ˈwestreɪ/" },
-    { word: "Scotland", chinese: "苏格兰", example: "Scotland is famous for its beautiful lakes.", phonetics: "/ˈskɒtlənd/" },
-    { word: "travel", chinese: "(长途或多次)旅行", example: "I like to travel to different countries.", phonetics: "/ˈtrævl/" },
-    { word: "half", chinese: "一半", example: "I ate half the cake.", phonetics: "/hɑːf/" },
-    { word: "price", chinese: "价格", example: "The price of this jacket is too high.", phonetics: "/praɪs/" },
-    { word: "lesson", chinese: "课", example: "Our English lesson starts at eight.", phonetics: "/ˈlesn/" },
-    { word: "visit", chinese: "拜访", example: "We will visit our grandparents this weekend.", phonetics: "/ˈvɪzɪt/" },
-    { word: "film", chinese: "电影", example: "That film was funny and exciting.", phonetics: "/fɪlm/" },
-    { word: "see a film", chinese: "看电影", example: "I want to see a film tonight.", phonetics: "/siː ə fɪlm/" },
-    { word: "trip", chinese: "旅行", example: "Our school trip was great fun.", phonetics: "/trɪp/" },
-    { word: "take a trip", chinese: "去旅行", example: "Let’s take a trip to the beach.", phonetics: "/teɪk ə trɪp/" },
-    { word: "supermarket", chinese: "超级市场", example: "My mother buys food at the supermarket.", phonetics: "/ˈsuːpəmɑːkɪt/" },
-    { word: "evening", chinese: "晚上；傍晚", example: "I usually do my homework in the evening.", phonetics: "/ˈiːvnɪŋ/" },
-    { word: "tonight", chinese: "在今晚", example: "What are you going to do tonight?", phonetics: "/təˈnaɪt/" },
-    { word: "tomorrow", chinese: "明天", example: "I have a test tomorrow.", phonetics: "/təˈmɒrəʊ/" },
-    { word: "next week", chinese: "下周", example: "We will start a new lesson next week.", phonetics: "/nekst wiːk/" },
-    { word: "space", chinese: "太空", example: "He wants to learn more about space.", phonetics: "/speɪs/" },
-    { word: "dictionary", chinese: "词典", example: "Look up the word in the dictionary.", phonetics: "/ˈdɪkʃənəri/" },
-    { word: "comic", chinese: "漫画的", example: "He likes reading comic stories.", phonetics: "/ˈkɒmɪk/" },
-    { word: "comic book", chinese: "(儿童的)连环画册", example: "I bought a new comic book yesterday.", phonetics: "/ˈkɒmɪk bʊk/" },
-    { word: "word", chinese: "单词", example: "This word is difficult for me.", phonetics: "/wɜːd/" },
-    { word: "word book", chinese: "字帖", example: "I write new words in my word book.", phonetics: "/wɜːd bʊk/" },
-    { word: "postcard", chinese: "明信片", example: "She sent me a postcard from Beijing.", phonetics: "/ˈpəʊstkɑːd/" },
-    { word: "Mid-Autumn Festival", chinese: "中秋节", example: "We eat mooncakes at Mid-Autumn Festival.", phonetics: "/mɪd ˈɔːtəm ˈfestɪvəl/" },
-    { word: "together", chinese: "一起", example: "Let’s do our homework together.", phonetics: "/təˈɡeðə(r)/" },
-    { word: "get together", chinese: "聚会", example: "We will get together this Saturday.", phonetics: "/ɡet təˈɡeðə(r)/" },
-    { word: "mooncake", chinese: "月饼", example: "The mooncake tastes sweet and delicious.", phonetics: "/ˈmuːnkeɪk/" },
-    { word: "poem", chinese: "诗", example: "He wrote a poem about the moon.", phonetics: "/ˈpəʊɪm/" },
-    { word: "moon", chinese: "月亮", example: "The moon is very bright tonight.", phonetics: "/muːn/" },
-    { word: "share", chinese: "分享", example: "I want to share this cake with you.", phonetics: "/ʃeə(r)/" },
-    { word: "pen pal", chinese: "笔友", example: "I have a pen pal in Canada.", phonetics: "/ˈpen pæl/" },
-    { word: "hobby", chinese: "业余爱好", example: "My hobby is playing basketball.", phonetics: "/ˈhɒbi/" },
-    { word: "jasmine", chinese: "茉莉", example: "Jasmine has a very nice smell.", phonetics: "/ˈdʒæzmɪn/" },
-    { word: "idea", chinese: "想法；主意", example: "That is a great idea.", phonetics: "/aɪˈdɪə/" },
-    { word: "Canberra", chinese: "堪培拉（澳大利亚首都）", example: "Canberra is the capital of Australia.", phonetics: "/ˈkænbərə/" },
-    { word: "amazing", chinese: "令人吃惊的", example: "The view from the mountain is amazing.", phonetics: "/əˈmeɪzɪŋ/" },
-    { word: "studies", chinese: "(study 的复数)学习", example: "He works hard at his studies.", phonetics: "/ˈstʌdiz/" },
-    { word: "puzzle", chinese: "谜", example: "This puzzle is difficult but fun.", phonetics: "/ˈpʌzl/" },
-    { word: "hiking", chinese: "远足", example: "We went hiking in the mountains.", phonetics: "/ˈhaɪkɪŋ/" },
-    { word: "shall", chinese: "(表示征求意见)应该", example: "Shall we go for a walk?", phonetics: "/ʃæl/" },
-    { word: "goal", chinese: "目标", example: "My goal is to speak English well.", phonetics: "/ɡəʊl/" },
-    { word: "join", chinese: "加入", example: "Would you like to join our club?", phonetics: "/dʒɔɪn/" },
-    { word: "club", chinese: "俱乐部", example: "I am in the school music club.", phonetics: "/klʌb/" },
-    { word: "factory", chinese: "工厂", example: "My uncle works in a factory.", phonetics: "/ˈfæktəri/" },
-    { word: "worker", chinese: "工人", example: "The worker is very busy today.", phonetics: "/ˈwɜːkə(r)/" },
-    { word: "postman", chinese: "邮递员", example: "The postman brings letters every morning.", phonetics: "/ˈpəʊstmən/" },
-    { word: "businessman", chinese: "商人；企业家", example: "He is a successful businessman.", phonetics: "/ˈbɪznəsmən/" },
-    { word: "police officer", chinese: "警察", example: "The police officer helped the lost child.", phonetics: "/pəˈliːs ˈɒfɪsə(r)/" },
-    { word: "country", chinese: "国家", example: "China is a big country.", phonetics: "/ˈkʌntri/" },
-    { word: "head teacher", chinese: "校长", example: "Our head teacher is very kind.", phonetics: "/hed ˈtiːtʃə(r)/" },
-    { word: "fisherman", chinese: "渔民", example: "The fisherman caught many fish.", phonetics: "/ˈfɪʃəmən/" },
-    { word: "scientist", chinese: "科学家", example: "She wants to be a scientist in the future.", phonetics: "/ˈsaɪəntɪst/" },
-    { word: "pilot", chinese: "飞行员", example: "The pilot flies the plane safely.", phonetics: "/ˈpaɪlət/" },
-    { word: "coach", chinese: "教练", example: "Our football coach is very strict.", phonetics: "/kəʊtʃ/" },
-    { word: "sea", chinese: "大海", example: "The sea looks blue and beautiful.", phonetics: "/siː/" },
-    { word: "stay", chinese: "保持", example: "We will stay here for two days.", phonetics: "/steɪ/" },
-    { word: "university", chinese: "大学", example: "She studies English at a university.", phonetics: "/ˌjuːnɪˈvɜːsəti/" },
-    { word: "gym", chinese: "体育馆", example: "I often exercise in the gym.", phonetics: "/dʒɪm/" },
-    { word: "if", chinese: "如果", example: "If it rains, we will stay at home.", phonetics: "/ɪf/" },
-    { word: "reporter", chinese: "记者", example: "The reporter is talking to the head teacher.", phonetics: "/rɪˈpɔːtə(r)/" },
-    { word: "use", chinese: "使用", example: "You can use my pen.", phonetics: "/juːz/" },
-    { word: "type", chinese: "打字", example: "She can type very fast.", phonetics: "/taɪp/" },
-    { word: "quickly", chinese: "迅速地", example: "He ran quickly to catch the bus.", phonetics: "/ˈkwɪkli/" },
-    { word: "secretary", chinese: "秘书", example: "The secretary answered the phone politely.", phonetics: "/ˈsekrətri/" },
-    { word: "mice", chinese: "(mouse 的复数) 老鼠", example: "The cats are chasing the mice.", phonetics: "/maɪs/" },
-    { word: "chase", chinese: "追赶", example: "The dog likes to chase the ball.", phonetics: "/tʃeɪs/" },
-    { word: "bad", chinese: "邪恶的；坏的", example: "Smoking is bad for your health.", phonetics: "/bæd/" },
-    { word: "hurt", chinese: "(使)受伤", example: "Did you hurt your hand?", phonetics: "/hɜːt/" },
-    { word: "ill", chinese: "有病的；不好服", example: "She is ill and stays in bed.", phonetics: "/ɪl/" },
-    { word: "wrong", chinese: "有毛病", example: "Something is wrong with my computer.", phonetics: "/rɒŋ/" },
-    { word: "should", chinese: "应该", example: "You should drink more water.", phonetics: "/ʃʊd/" },
-    { word: "feel", chinese: "觉得；感到", example: "I feel happy today.", phonetics: "/fiːl/" },
-    { word: "well", chinese: "健康；身体好", example: "I don’t feel very well today.", phonetics: "/wel/" },
-    { word: "sit", chinese: "坐", example: "Please sit on this chair.", phonetics: "/sɪt/" },
-    { word: "wear", chinese: "穿", example: "She likes to wear red dresses.", phonetics: "/weə(r)/" },
-    { word: "more", chinese: "更多的", example: "I need more time to finish this.", phonetics: "/mɔː(r)/" },
-    { word: "deep", chinese: "深的", example: "The lake is very deep.", phonetics: "/diːp/" },
-    { word: "breath", chinese: "呼吸", example: "Take a slow, gentle breath.", phonetics: "/breθ/" },
-    { word: "take a deep breath", chinese: "深深吸一口气", example: "Close your eyes and take a deep breath.", phonetics: "/teɪk ə diːp breθ/" },
-    { word: "count", chinese: "数数", example: "Can you count from one to ten?", phonetics: "/kaʊnt/" },
-    { word: "count to ten", chinese: "数到十", example: "When you are angry, count to ten first.", phonetics: "/kaʊnt tə ten/" },
-    { word: "grass", chinese: "草坪", example: "The children are playing on the grass.", phonetics: "/ɡrɑːs/" },
-    { word: "hear", chinese: "听见", example: "I can hear birds outside the window.", phonetics: "/hɪə(r)/" },
-    { word: "ant", chinese: "蚂蚁", example: "There is an ant on the table.", phonetics: "/ænt/" },
-    { word: "worry", chinese: "担心；担忧", example: "Don’t worry, everything will be fine.", phonetics: "/ˈwʌri/" },
-    { word: "stuck", chinese: "陷住；无法移动", example: "My shoe got stuck in the mud.", phonetics: "/stʌk/" },
-    { word: "mud", chinese: "泥", example: "The road is full of mud after the rain.", phonetics: "/mʌd/" },
-    { word: "pull", chinese: "拉；拽", example: "He tried to pull the door open.", phonetics: "/pʊl/" },
-    { word: "everyone", chinese: "每人", example: "Everyone in the class likes this game.", phonetics: "/ˈevriwʌn/" },
-    { word: "angry", chinese: "生气的", example: "She was angry because he was late again.", phonetics: "/ˈæŋɡri/" },
-    { word: "afraid", chinese: "害怕", example: "The little boy is afraid of the dark.", phonetics: "/əˈfreɪd/" },
-    { word: "sad", chinese: "难过的", example: "He felt sad when his dog was lost.", phonetics: "/sæd/" },
-    { word: "worried", chinese: "担心的；发愁的", example: "I am worried about the exam.", phonetics: "/ˈwʌrɪd/" },
-    { word: "happy", chinese: "高兴的", example: "They are very happy at the party.", phonetics: "/ˈhæpi/" },
-    { word: "see a doctor", chinese: "看病", example: "You should see a doctor soon.", phonetics: "/siː ə ˈdɒktə(r)/" }
-];
+/* script.js - Final Corrected Version (Exam Mode Fixed) */
 
-// --- 💾 新功能：读取本地存储 ---
-function loadProgress() {
-    const savedIndices = localStorage.getItem('hamster_unlearned_indices');
-    if (savedIndices) {
-        return JSON.parse(savedIndices);
-    }
-    // 如果没有存档，返回所有单词索引
-    return Array.from(Array(wordList.length).keys());
+// ================================
+// 0. 初始化 & 词库加载
+// ================================
+const currentBookId = localStorage.getItem("current_book");
+
+if (!currentBookId) {
+    alert("请先选择一本单词书 🐹");
+    window.location.href = "books.html";
 }
 
-// 2. 状态变量
-let currentWordIndex = 0;
-// 修改：初始状态从本地存储读取
-let unlearnedIndices = loadProgress(); 
-const totalWords = wordList.length;
-let isExamMode = false;
+const rawBookData = localStorage.getItem("wordbook_" + currentBookId);
+let bookData = null;
 
-// 3. 获取 DOM 元素
+try {
+    bookData = JSON.parse(rawBookData);
+} catch {
+    alert("词库损坏，请重新导入 🤕");
+    window.location.href = "books.html";
+}
+
+if (!bookData || !Array.isArray(bookData.words) || bookData.words.length === 0) {
+    alert("词库无效 🤕");
+    window.location.href = "books.html";
+}
+
+const wordList = bookData.words;
+
+// ================================
+// 1. 进度管理
+// ================================
+const PROGRESS_KEY = "hamster_progress_" + currentBookId;
+
+function loadProgress() {
+    const saved = localStorage.getItem(PROGRESS_KEY);
+    if (saved) {
+        try { return JSON.parse(saved); } catch {}
+    }
+    return Array.from({ length: wordList.length }, (_, i) => i);
+}
+
+function saveProgress() {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(unlearnedIndices));
+}
+
+// ================================
+// 2. 状态变量
+// ================================
+let unlearnedIndices = loadProgress();
+let currentWordIndex = -1;
+let isExamMode = false;
+let isSpeaking = false;
+
+// ================================
+// 3. DOM 元素
+// ================================
 const currentWordEl = document.getElementById('current-word');
 const chineseDefinitionEl = document.getElementById('chinese-definition');
 const exampleSentenceEl = document.getElementById('example-sentence');
@@ -187,31 +75,63 @@ const exampleBox = document.getElementById('example-box');
 const slotsContainer = document.getElementById('slots-container');
 const modeToggleBtn = document.getElementById('mode-toggle-btn');
 const modeText = document.getElementById('mode-text');
-
-// 双输入框
 const examInput = document.getElementById('exam-input');
 const studyInput = document.getElementById('study-input');
 
-// --- 💾 新功能：保存进度 ---
-function saveProgress() {
-    localStorage.setItem('hamster_unlearned_indices', JSON.stringify(unlearnedIndices));
+document.querySelector('h1').textContent = `🐹 ${bookData.name}`;
+
+// ================================
+// 4. SpeechSynthesis 初始化
+// ================================
+function initSpeech() {
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.getVoices();
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+    }
 }
 
-// --- ⚙️ 模式切换功能 ---
+// ================================
+// 5. 安全朗读
+// ================================
+function playAudio() {
+    if (isSpeaking || !('speechSynthesis' in window)) return;
+
+    const word = wordList[currentWordIndex]?.word;
+    if (!word) return;
+
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.8;
+
+    const voices = speechSynthesis.getVoices();
+    const enVoice = voices.find(v => v.lang.startsWith('en'));
+    if (enVoice) utterance.voice = enVoice;
+
+    utterance.onstart = () => isSpeaking = true;
+    utterance.onend = () => isSpeaking = false;
+    utterance.onerror = () => isSpeaking = false;
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utterance);
+}
+
+// ================================
+// 6. 模式切换
+// ================================
 function toggleMode() {
     isExamMode = !isExamMode;
     examInput.value = '';
     studyInput.value = '';
+    feedbackMessage.textContent = '';
 
     if (isExamMode) {
-        modeToggleBtn.classList.remove('study-active');
-        modeToggleBtn.classList.add('exam-active');
+        modeToggleBtn.classList.replace('study-active', 'exam-active');
         modeText.textContent = "📝 考试模式";
         showHideBtn.textContent = "🏳️ 我放弃 (看答案)";
         typingSection.classList.add('exam-mode-input');
     } else {
-        modeToggleBtn.classList.remove('exam-active');
-        modeToggleBtn.classList.add('study-active');
+        modeToggleBtn.classList.replace('exam-active', 'study-active');
         modeText.textContent = "📚 学习模式";
         showHideBtn.textContent = "👀 偷看答案";
         typingSection.classList.remove('exam-mode-input');
@@ -219,371 +139,173 @@ function toggleMode() {
     loadWord();
 }
 
-// --- 🔊 音频播放 ---
-function playAudio() {
-    if (unlearnedIndices.length > 0) { // 仅当还有单词时才播放
-        const wordToSpeak = wordList[currentWordIndex].word;
-        const utterance = new SpeechSynthesisUtterance(wordToSpeak);
-        utterance.lang = 'en-US';
-        utterance.rate = 0.8;
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(utterance);
-    }
+// ================================
+// 7. 渲染逻辑
+// ================================
+function pickNextWord() {
+    return unlearnedIndices[Math.floor(Math.random() * unlearnedIndices.length)];
 }
 
-// --- 🔡 渲染下划线 ---
-function renderSlots() {
-    slotsContainer.innerHTML = ''; 
-    slotsContainer.appendChild(examInput);
-    const targetWord = wordList[currentWordIndex].word;
-
-    for (let i = 0; i < targetWord.length; i++) {
-        const char = targetWord[i];
-        const span = document.createElement('span');
-        if (char === ' ') {
-            span.className = 'space-slot';
-        } else {
-            span.className = 'char-slot';
-        }
-        slotsContainer.appendChild(span);
-    }
-}
-
-// --- 辅助：更新 Slots UI ---
-function updateSlotsUI(currentVal) {
-    const allChildren = Array.from(slotsContainer.children);
-    const allSlots = allChildren.filter(el => el.tagName === 'SPAN');
-    
-    let charIndex = 0;
-    
-    for (let i = 0; i < allSlots.length; i++) {
-        const slot = allSlots[i];
-        slot.classList.remove('active');
-        
-        if (slot.classList.contains('char-slot')) {
-            const char = currentVal[charIndex] || '';
-            slot.textContent = char; 
-            if (charIndex === currentVal.length) {
-                slot.classList.add('active');
-            }
-            charIndex++;
-        } else if (slot.classList.contains('space-slot')) {
-            charIndex++;
-        }
-    }
-    
-    // 修正光标位置
-    if (currentVal.length < allSlots.length) {
-        if (allSlots[currentVal.length]) {
-             if (allSlots[currentVal.length].classList.contains('space-slot')) {
-                 // 如果光标位置是空格，尝试将光标移动到下一个字符槽
-                 if (allSlots[currentVal.length + 1]) {
-                     allSlots[currentVal.length + 1].classList.add('active');
-                 }
-             } else {
-                 allSlots[currentVal.length].classList.add('active');
-             }
-        }
-    }
-}
-
-// --- ⌨️ 考试输入框逻辑 ---
-examInput.addEventListener('input', function(e) {
-    const targetWord = wordList[currentWordIndex].word;
-    let currentVal = this.value;
-    const isDeleting = e.inputType && e.inputType.includes('delete');
-
-    // 处理复合词的空格自动填充
-    if (!isDeleting && currentVal.length < targetWord.length) {
-        if (targetWord[currentVal.length] === ' ') {
-            currentVal += ' ';
-            this.value = currentVal;
-        }
-    }
-    try { this.setSelectionRange(currentVal.length, currentVal.length); } catch (err) {}
-    updateSlotsUI(currentVal);
-});
-
-examInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Backspace') {
-        let currentVal = this.value;
-        // 如果当前字符是空格，则回退两个字符 (即删除字符和前面的空格)
-        if (currentVal.length > 0 && currentVal.endsWith(' ')) {
-             e.preventDefault();
-             // 注意：这里我们应该删除空格前的那个字符。但为了简化复合词逻辑，通常只删除空格本身。
-             // 如果要处理复杂的复合词，可能需要更精细的逻辑。此处沿用原逻辑：删除上一个字符（即空格前的字母）
-             this.value = currentVal.slice(0, -2);
-             updateSlotsUI(this.value);
-             try { this.setSelectionRange(this.value.length, this.value.length); } catch(err) {}
-        }
-    }
-    if (e.key === 'Enter') checkTyping();
-});
-
-studyInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') checkTyping();
-});
-
-// --- 📝 检查答案 ---
-function checkTyping() {
-    const correctWord = wordList[currentWordIndex].word.toLowerCase().trim();
-    const activeInput = isExamMode ? examInput : studyInput;
-    const userAnswer = activeInput.value.toLowerCase().trim();
-
-    if (userAnswer === correctWord) {
-        feedbackMessage.textContent = "✨ 答对啦！太棒了！ ✨";
-        feedbackMessage.className = 'feedback correct';
-        
-        if (isExamMode) {
-            const spans = slotsContainer.querySelectorAll('span.char-slot');
-            for(let i=0; i<spans.length; i++) {
-                // 如果是复合词，答案可能包含空格，这里只更新字母槽
-                const char = correctWord[i];
-                if (char !== ' ') {
-                    spans[i].textContent = char;
-                    spans[i].style.borderColor = '#66bb6a';
-                    spans[i].style.color = '#66bb6a';
-                }
-            }
-            phoneticsEl.textContent = wordList[currentWordIndex].phonetics;
-            phoneticsEl.style.visibility = 'visible';
-            playAudioBtn.style.visibility = 'visible';
-            playAudio(); 
-        } else {
-            playAudio();
-        }
-        
-        setTimeout(() => { handleKnow(); }, 1200);
-        
-    } else {
-        feedbackMessage.textContent = "💨 不对哦，再试一次！";
-        feedbackMessage.className = 'feedback incorrect';
-        
-        if(isExamMode) {
-             const spans = slotsContainer.querySelectorAll('span.char-slot');
-             spans.forEach(s => s.style.borderColor = '#ef5350');
-             setTimeout(() => {
-                 spans.forEach(s => s.style.borderColor = '');
-             }, 500);
-             examInput.focus();
-             try{ examInput.setSelectionRange(examInput.value.length, examInput.value.length); }catch(e){}
-        } else {
-             studyInput.focus();
-        }
-    }
-}
-
-// --- 辅助函数：渲染公共信息 (两种模式都需要的) ---
-function renderCommonInfo(wordData) {
-    examInput.value = '';
-    studyInput.value = '';
-    feedbackMessage.textContent = '';
-    feedbackMessage.className = 'feedback';
-    
-    // 更新中文释义和例句 (两种模式都可能用到)
-    chineseDefinitionEl.textContent = wordData.chinese;
-    exampleSentenceEl.textContent = wordData.example;
-    
-    // 更新进度条
-    const learnedCount = totalWords - unlearnedIndices.length;
-    progressInfoEl.textContent = `🐹 进度: ${learnedCount} / ${totalWords} (剩余: ${unlearnedIndices.length})`;
-    
-    // 控制通用UI状态
-    learningControls.classList.remove('hidden');
-    typingSection.classList.remove('hidden');
-    resetBtn.classList.add('hidden');
-    playAudioBtn.classList.remove('hidden');
-}
-
-// --- 辅助函数：渲染学习模式 (Study Mode) ---
-function renderStudyMode(wordData) {
-    currentWordEl.style.display = 'block';
-    currentWordEl.textContent = wordData.word;
-    phoneticsEl.textContent = wordData.phonetics;
-    
-    // 隐藏考试模式元素
-    slotsContainer.classList.add('hidden');
-    
-    // 显示学习模式元素
-    phoneticsEl.style.visibility = 'visible';
-    playAudioBtn.style.visibility = 'visible';
-    definitionSectionEl.classList.add('hidden'); // 默认隐藏释义
-    exampleBox.classList.remove('hidden');
-    feedbackBtns.classList.remove('hidden');
-    
-    studyInput.focus();
-}
-
-// --- 辅助函数：渲染考试模式 (Exam Mode) ---
-function renderExamMode(wordData) {
-    currentWordEl.style.display = 'none'; // 隐藏单词本身
-    
-    // 渲染下划线
-    slotsContainer.classList.remove('hidden');
-    renderSlots();
-    updateSlotsUI(''); 
-    
-    // 隐藏学习模式元素
-    phoneticsEl.style.visibility = 'hidden'; // 隐藏音标
-    playAudioBtn.style.visibility = 'hidden'; // 隐藏播放按钮
-    exampleBox.classList.add('hidden'); // 隐藏例句
-    feedbackBtns.classList.add('hidden'); // 隐藏“记住/不熟”按钮
-
-    // 默认显示释义
-    definitionSectionEl.classList.remove('hidden'); 
-
-    // 自动聚焦到考试输入框
-    setTimeout(() => { examInput.focus(); }, 100);
-}
-
-// --- 核心逻辑：加载单词 (重构后) ---
 function loadWord() {
-    // 1. 检查是否通关
     if (unlearnedIndices.length === 0) {
         finishLearning();
         return;
     }
 
-    const currentWordData = wordList[currentWordIndex];
+    currentWordIndex = pickNextWord();
+    const word = wordList[currentWordIndex];
 
-    // 2. 渲染公共信息
-    renderCommonInfo(currentWordData);
+    // 公共区域
+    chineseDefinitionEl.textContent = word.chinese;
+    exampleSentenceEl.textContent = word.example || '';
+    progressInfoEl.textContent = `🐹 进度: ${wordList.length - unlearnedIndices.length} / ${wordList.length}`;
 
-    // 3. 根据模式渲染特定UI
-    if (isExamMode) {
-        renderExamMode(currentWordData);
-    } else {
-        renderStudyMode(currentWordData);
-    }
+    feedbackMessage.textContent = '';
+    examInput.value = '';
+    studyInput.value = '';
+
+    isExamMode ? renderExamMode(word) : renderStudyMode(word);
 }
 
-
-// --- 🎉 新功能：通关撒花 ---
-function triggerConfetti() {
-    // 简单的撒花配置
-    const duration = 3000;
-    const end = Date.now() + duration;
-
-    (function frame() {
-        // 随机在屏幕左侧或右侧发射
-        confetti({
-            particleCount: 5,
-            angle: 60,
-            spread: 55,
-            origin: { x: 0 },
-            colors: ['#ffb7b2', '#a0e7e5', '#ffdac1'] // 仓鼠配色
-        });
-        confetti({
-            particleCount: 5,
-            angle: 120,
-            spread: 55,
-            origin: { x: 1 },
-            colors: ['#ffb7b2', '#a0e7e5', '#ffdac1']
-        });
-
-        if (Date.now() < end) {
-            requestAnimationFrame(frame);
-        }
-    }());
-}
-
-function finishLearning() {
+function renderStudyMode(word) {
     currentWordEl.style.display = 'block';
-    currentWordEl.textContent = "🎉 通关！";
-    slotsContainer.classList.add('hidden');
-    phoneticsEl.textContent = "所有单词都消灭啦！";
+    currentWordEl.textContent = word.word;
+    phoneticsEl.textContent = word.phonetics;
+    phoneticsEl.style.visibility = 'visible';
+    playAudioBtn.style.visibility = 'visible';
+
     definitionSectionEl.classList.add('hidden');
-    learningControls.classList.add('hidden');
-    typingSection.classList.add('hidden');
-    playAudioBtn.classList.add('hidden');
-    resetBtn.classList.remove('hidden');
-    progressInfoEl.textContent = "100%";
-    
-    // 触发撒花
-    triggerConfetti();
-    // 清除本地存储，因为已经学完了
-    localStorage.removeItem('hamster_unlearned_indices');
+    exampleBox.classList.remove('hidden');
+    slotsContainer.classList.add('hidden');
+    feedbackBtns.classList.remove('hidden');
 }
 
-function nextRandomWord() {
-    if (unlearnedIndices.length > 0) {
-        const randomIndex = Math.floor(Math.random() * unlearnedIndices.length);
-        currentWordIndex = unlearnedIndices[randomIndex];
+function renderExamMode(word) {
+    currentWordEl.style.display = 'none';
+
+    definitionSectionEl.classList.remove('hidden'); // ✅ 中文显示
+    exampleBox.classList.add('hidden');
+
+    phoneticsEl.style.visibility = 'hidden';
+    playAudioBtn.style.visibility = 'hidden';
+
+    slotsContainer.classList.remove('hidden');
+    renderSlots();
+
+    feedbackBtns.classList.add('hidden');
+    setTimeout(() => examInput.focus(), 50);
+}
+
+// ================================
+// 8. 考试输入 Slots
+// ================================
+function renderSlots() {
+    slotsContainer.querySelectorAll('span').forEach(s => s.remove());
+    if (!slotsContainer.contains(examInput)) slotsContainer.appendChild(examInput);
+
+    for (const ch of wordList[currentWordIndex].word) {
+        const span = document.createElement('span');
+        span.className = ch === ' ' ? 'space-slot' : 'char-slot';
+        slotsContainer.appendChild(span);
     }
+}
+
+function updateSlotsUI(val) {
+    const slots = slotsContainer.querySelectorAll('.char-slot');
+    slots.forEach((s, i) => s.textContent = val[i] || '');
+}
+
+// ================================
+// 9. 判断输入
+// ================================
+function checkTyping() {
+    const correct = wordList[currentWordIndex].word.toLowerCase().trim();
+    const input = isExamMode ? examInput : studyInput;
+    const user = input.value.toLowerCase().trim();
+
+    if (user === correct) {
+        feedbackMessage.textContent = "✨ 答对啦！";
+        playAudio();
+        setTimeout(handleKnow, 1000);
+    } else {
+        feedbackMessage.textContent = "💨 不对哦，再试一次！";
+        input.focus();
+    }
+}
+
+// ================================
+// 10. 我放弃（考试模式专用）
+// ================================
+function giveUpInExamMode() {
+    currentWordEl.style.display = 'block';
+    currentWordEl.textContent = wordList[currentWordIndex].word;
+
+    phoneticsEl.textContent = wordList[currentWordIndex].phonetics;
+    phoneticsEl.style.visibility = 'visible';
+    playAudioBtn.style.visibility = 'visible';
+
+    slotsContainer.classList.add('hidden');
+    feedbackMessage.textContent = "📖 看一下答案，下次一定行！";
+
+    playAudio();
+
+    setTimeout(handleDontKnow, 3000);
+}
+
+// ================================
+// 11. 学习状态
+// ================================
+function handleKnow() {
+    unlearnedIndices = unlearnedIndices.filter(i => i !== currentWordIndex);
+    saveProgress();
     loadWord();
 }
 
-function toggleDefinition() {
-    if (isExamMode) {
-        // 考试模式下点击“放弃”，展示答案并标记为不熟
-        currentWordEl.style.display = 'block';
-        currentWordEl.textContent = wordList[currentWordIndex].word;
-
-        phoneticsEl.textContent = wordList[currentWordIndex].phonetics;
-        phoneticsEl.style.visibility = 'visible';
-
-        playAudioBtn.style.visibility = 'visible';
-        slotsContainer.classList.add('hidden');
-
-        feedbackMessage.textContent = "下次一定行！";
-        
-        // 🚀 新增：自动播放单词音频
-        playAudio(); 
-        
-        // 🚀 修改：增加答案显示时长到 6 秒
-        setTimeout(() => { handleDontKnow(); }, 6000); 
-    } else {
-        // 学习模式下点击“偷看”，切换释义的显示/隐藏状态
-        definitionSectionEl.classList.toggle('hidden');
-    }
-}
-
-function handleKnow() {
-    if (unlearnedIndices.length > 0) {
-        const indexToRemove = unlearnedIndices.indexOf(currentWordIndex);
-        if (indexToRemove > -1) { 
-            unlearnedIndices.splice(indexToRemove, 1); 
-            // 💾 每次学会一个词，都自动保存
-            saveProgress();
-        }
-    }
-    nextRandomWord();
-}
-
 function handleDontKnow() {
-    if (!isExamMode) { definitionSectionEl.classList.remove('hidden'); }
-    nextRandomWord();
+    loadWord();
 }
 
+function finishLearning() {
+    currentWordEl.textContent = "🎉 通关！";
+    phoneticsEl.textContent = "当前词书已完成";
+    typingSection.classList.add('hidden');
+    learningControls.classList.add('hidden');
+    resetBtn.classList.remove('hidden');
+}
+
+// ================================
+// 12. 重置
+// ================================
 function resetLearning() {
-    unlearnedIndices = Array.from(Array(totalWords).keys()); 
-    // 💾 重置时，清除存档
-    localStorage.removeItem('hamster_unlearned_indices');
-    
-    const randomIndex = Math.floor(Math.random() * unlearnedIndices.length);
-    currentWordIndex = unlearnedIndices[randomIndex];
-    loadWord(); 
+    unlearnedIndices = Array.from({ length: wordList.length }, (_, i) => i);
+    saveProgress();
+    loadWord();
 }
 
+// ================================
+// 13. 事件绑定
+// ================================
 modeToggleBtn.addEventListener('click', toggleMode);
-showHideBtn.addEventListener('click', toggleDefinition);
+
+showHideBtn.addEventListener('click', () => {
+    if (isExamMode) giveUpInExamMode();
+    else definitionSectionEl.classList.toggle('hidden');
+});
+
 knowBtn.addEventListener('click', handleKnow);
 dontKnowBtn.addEventListener('click', handleDontKnow);
 resetBtn.addEventListener('click', resetLearning);
 playAudioBtn.addEventListener('click', playAudio);
 checkBtn.addEventListener('click', checkTyping);
 
-slotsContainer.addEventListener('click', () => {
-    examInput.focus();
-});
+examInput.addEventListener('input', e => updateSlotsUI(e.target.value));
+examInput.addEventListener('keydown', e => e.key === 'Enter' && checkTyping());
+studyInput.addEventListener('keydown', e => e.key === 'Enter' && checkTyping());
 
+// ================================
+// 14. 启动
+// ================================
 document.addEventListener('DOMContentLoaded', () => {
-    // 检查是否所有单词都学完了
-    if (unlearnedIndices.length === 0) {
-        finishLearning();
-    } else {
-        const randomIndex = Math.floor(Math.random() * unlearnedIndices.length);
-        currentWordIndex = unlearnedIndices[randomIndex];
-        loadWord();
-    }
+    initSpeech();
+    loadWord();
 });
