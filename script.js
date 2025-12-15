@@ -1,4 +1,4 @@
-/* script.js - Final Corrected Version (Exam Mode Fixed) */
+/* script.js - Final Fixed Version (Layout + Space Logic) */
 
 // ================================
 // 0. 初始化 & 词库加载
@@ -128,12 +128,17 @@ function toggleMode() {
     if (isExamMode) {
         modeToggleBtn.classList.replace('study-active', 'exam-active');
         modeText.textContent = "📝 考试模式";
-        showHideBtn.textContent = "🏳️ 我放弃 (看答案)";
+        
+        // 配合 CSS 的并排布局，简化文案
+        showHideBtn.textContent = "🔑 看答案";
+        
         typingSection.classList.add('exam-mode-input');
     } else {
         modeToggleBtn.classList.replace('exam-active', 'study-active');
         modeText.textContent = "📚 学习模式";
+        
         showHideBtn.textContent = "👀 偷看答案";
+        
         typingSection.classList.remove('exam-mode-input');
     }
     loadWord();
@@ -183,7 +188,7 @@ function renderStudyMode(word) {
 function renderExamMode(word) {
     currentWordEl.style.display = 'none';
 
-    definitionSectionEl.classList.remove('hidden'); // ✅ 中文显示
+    definitionSectionEl.classList.remove('hidden'); 
     exampleBox.classList.add('hidden');
 
     phoneticsEl.style.visibility = 'hidden';
@@ -205,12 +210,15 @@ function renderSlots() {
 
     for (const ch of wordList[currentWordIndex].word) {
         const span = document.createElement('span');
+        // 根据字符是否为空格分配 class
         span.className = ch === ' ' ? 'space-slot' : 'char-slot';
         slotsContainer.appendChild(span);
     }
 }
 
 function updateSlotsUI(val) {
+    // 只选取字母槽 (.char-slot)，跳过空格槽
+    // 这样输入的连续字母会自动跳过空格显示
     const slots = slotsContainer.querySelectorAll('.char-slot');
     slots.forEach((s, i) => s.textContent = val[i] || '');
 }
@@ -219,13 +227,26 @@ function updateSlotsUI(val) {
 // 9. 判断输入
 // ================================
 function checkTyping() {
-    const correct = wordList[currentWordIndex].word.toLowerCase().trim();
+    // 🔥 修复点 1: 获取正确答案，移除所有空格
+    const correct = wordList[currentWordIndex].word.toLowerCase().replace(/\s+/g, '');
+    
     const input = isExamMode ? examInput : studyInput;
-    const user = input.value.toLowerCase().trim();
+    // 🔥 修复点 2: 获取用户输入，也移除所有空格 (容错处理)
+    const user = input.value.toLowerCase().replace(/\s+/g, '');
 
     if (user === correct) {
         feedbackMessage.textContent = "✨ 答对啦！";
         playAudio();
+        
+        // 触发撒花特效 (如果 index.html 引入了库)
+        if (typeof confetti === 'function') {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
         setTimeout(handleKnow, 1000);
     } else {
         feedbackMessage.textContent = "💨 不对哦，再试一次！";
@@ -298,7 +319,20 @@ resetBtn.addEventListener('click', resetLearning);
 playAudioBtn.addEventListener('click', playAudio);
 checkBtn.addEventListener('click', checkTyping);
 
-examInput.addEventListener('input', e => updateSlotsUI(e.target.value));
+// 🔥 修复点 3: 考试输入框监听逻辑修正
+examInput.addEventListener('input', e => {
+    // 强制移除用户输入的空格，防止占用字符槽
+    const val = e.target.value.replace(/\s+/g, '');
+    
+    // 如果发现有空格被移除了，同步更新 input 的值
+    if (e.target.value !== val) {
+        e.target.value = val;
+    }
+    
+    updateSlotsUI(val);
+});
+
+// 监听回车键提交
 examInput.addEventListener('keydown', e => e.key === 'Enter' && checkTyping());
 studyInput.addEventListener('keydown', e => e.key === 'Enter' && checkTyping());
 
