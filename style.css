@@ -1,3 +1,5 @@
+/* style.css - 修复版 (Bug Fixes: #4) */
+
 /* --- 全局设置 --- */
 :root {
     --primary-color: #ffb7b2;
@@ -41,14 +43,44 @@ body {
     gap: 15px;
 }
 
-header { text-align: center; width: 100%; }
+/* 🔥 Fix #4: 头部布局改为 Flex，防止标题与返回按钮重叠 */
+header { 
+    position: relative; /* 为绝对定位的子元素提供锚点 */
+    width: 100%;
+    display: flex;
+    justify-content: center; /* 标题居中 */
+    align-items: center;     /* 垂直居中 */
+    min-height: 50px;
+    padding: 0 50px;         /* 左右留出空间给返回按钮，防止文字遮挡 */
+    box-sizing: border-box;  /* padding 包含在宽度内 */
+    text-align: center;
+}
+
+/* 返回按钮 */
+.back-btn {
+    position: absolute;
+    left: 0;           /* 固定在左侧 */
+    top: 50%;
+    transform: translateY(-50%); /* 垂直精准居中 */
+    font-size: 1.5rem;
+    text-decoration: none;
+    line-height: 1;
+    padding: 10px;    /* 增加点击区域 */
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.back-btn:hover {
+    transform: translateY(-50%) scale(1.2);
+}
 
 h1 {
     font-family: 'Zcool KuaiLe', cursive;
     color: #fff;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    font-size: 2em;
-    margin: 0 0 10px 0;
+    font-size: 1.8em; /* 稍微缩小一点，适配移动端 */
+    margin: 0;
+    line-height: 1.2;
 }
 
 .mode-switch-container { margin-bottom: 8px; }
@@ -103,6 +135,7 @@ h1 {
     font-size: 2.2em;
     color: #5d4037;
     margin: 0;
+    word-break: break-word; /* 防止长单词撑破布局 */
 }
 
 .icon-btn {
@@ -114,6 +147,7 @@ h1 {
     font-size: 1.2rem;
     cursor: pointer;
     transition: all 0.2s;
+    flex-shrink: 0; /* 防止被压缩 */
 }
 
 .icon-btn:hover { transform: scale(1.1); background: #ffcdd2; }
@@ -143,30 +177,29 @@ h1 {
     justify-content: center;
     gap: 8px; 
     margin: 10px 0 20px 0;
-    min-height: 60px; /* 增加高度，方便手指点击 */
+    min-height: 60px;
     cursor: text; 
-    position: relative; /* 关键：作为定位参考 */
+    position: relative; 
 }
 
-/* 透明的考试输入框：覆盖在整个 slots 区域上 */
+/* 透明的考试输入框 */
 #exam-input {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0; /* 完全透明，看不见但点得到 */
-    z-index: 10; /* 确保在最上层 */
+    opacity: 0; 
+    z-index: 10;
     border: none;
     outline: none;
     background: transparent;
     color: transparent;
-    caret-color: transparent; /* 隐藏原生光标 */
+    caret-color: transparent;
     padding: 0;
     margin: 0;
 }
 
-/* 每一个字母的下划线样式 */
 .char-slot {
     width: 30px;
     height: 40px;
@@ -178,7 +211,7 @@ h1 {
     justify-content: center;
     align-items: center;
     transition: border-color 0.2s;
-    z-index: 1; /* 在输入框下面 */
+    z-index: 1; 
 }
 
 .space-slot {
@@ -238,12 +271,10 @@ h1 {
 
 #study-input:focus { border-color: var(--accent-color); }
 
-/* 📝 考试模式下，隐藏底部的学习输入框 */
 .exam-mode-input .input-wrapper {
     display: none; 
 }
 
-/* 考试模式下，让 Check 按钮占满宽度 */
 .exam-mode-input #check-btn {
     width: 100%;
     border-radius: 15px;
