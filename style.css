@@ -1,4 +1,4 @@
-/* style.css - 修正版 (为适应移动端键盘，减少垂直间距) */
+/* style.css - 布局修正版 (支持考试模式按钮并排) */
 
 /* --- 全局设置 --- */
 :root {
@@ -43,7 +43,6 @@ body {
     gap: 15px;
 }
 
-/* 🔥 Fix #4: 头部布局改为 Flex，防止标题与返回按钮重叠 */
 header { 
     position: relative;
     width: 100%;
@@ -56,7 +55,6 @@ header {
     text-align: center;
 }
 
-/* 返回按钮 */
 .back-btn {
     position: absolute;
     left: 0;
@@ -113,7 +111,6 @@ h1 {
 .word-card {
     background: var(--card-bg);
     width: 100%;
-    /* 优化: 减少垂直内边距，缩短卡片高度 */
     padding: 20px 20px;
     border-radius: 25px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
@@ -167,7 +164,6 @@ h1 {
 .divider {
     height: 2px;
     background: #fce4ec;
-    /* 优化: 减少垂直外边距 */
     margin: 15px 30px;
     border-radius: 2px;
 }
@@ -178,14 +174,12 @@ h1 {
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px; 
-    /* 优化: 减少底部外边距，缩短高度 */
     margin: 10px 0 15px 0;
     min-height: 50px;
     cursor: text; 
     position: relative; 
 }
 
-/* 透明的考试输入框 */
 #exam-input {
     position: absolute;
     top: 0;
@@ -205,10 +199,8 @@ h1 {
 
 .char-slot {
     width: 30px;
-    /* 优化: 减少高度 */
     height: 35px;
     border-bottom: 3px solid var(--slot-border);
-    /* 优化: 减少字体大小 */
     font-size: 20px;
     font-weight: bold;
     color: var(--text-color);
@@ -221,7 +213,6 @@ h1 {
 
 .space-slot {
     width: 20px;
-    /* 优化: 减少高度 */
     height: 35px;
     border-bottom: none; 
 }
@@ -233,16 +224,12 @@ h1 {
 /* --- 释义区域 --- */
 .definition-box {
     background-color: #fff8e1;
-    /* 优化: 减少内边距和底部外边距 */
     padding: 12px;
     border-radius: 15px;
     margin-bottom: 15px;
     text-align: left;
 }
-.def-item { 
-    /* 优化: 减少元素间距 */
-    margin-bottom: 8px; 
-}
+.def-item { margin-bottom: 8px; }
 .tag {
     background-color: var(--primary-color);
     color: white;
@@ -253,23 +240,26 @@ h1 {
     font-weight: bold;
 }
 .definition-box p { 
-    /* 优化: 减少顶部外边距和行高 */
     margin: 3px 0 0 0; 
     line-height: 1.4; 
-    font-size: 0.95rem; /* 稍微缩小字体 */
+    font-size: 0.95rem;
 }
 
-/* --- 输入控制区域 --- */
+/* --- 输入区域与按钮布局 (核心改动) --- */
 .typing-area {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 15px;
+    flex-wrap: wrap; /* 允许换行，为学习模式服务 */
+    gap: 10px;
 }
 
 .input-wrapper {
     width: 60%;
     max-width: 300px;
     position: relative;
+    order: 1; /* 学习模式：排第一 */
 }
 
 #study-input {
@@ -286,29 +276,48 @@ h1 {
 
 #study-input:focus { border-color: var(--accent-color); }
 
-.exam-mode-input .input-wrapper {
-    display: none; 
-}
-
-.exam-mode-input #check-btn {
-    width: 100%;
-    border-radius: 15px;
-    margin-top: 0;
-}
-
+/* 默认提交按钮样式 */
 #check-btn {
     background-color: var(--accent-color);
     color: white;
     border: none;
     padding: 0 20px;
-    border-radius: 0 15px 15px 0;
+    border-radius: 0 15px 15px 0; /* 左平右圆，适配输入框 */
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s;
     height: 46px; 
+    order: 2; /* 学习模式：排第二 */
 }
 
 #check-btn:hover { background-color: #ff7eb3; }
+
+/* 偷看按钮默认样式 (学习模式) */
+#show-hide-btn {
+    order: 3; /* 学习模式：排第三（强制换行） */
+    width: 100%; /* 占满一行 */
+    margin-top: 5px;
+}
+
+/* --- 考试模式特殊布局 --- */
+.exam-mode-input {
+    flex-wrap: nowrap; /* 考试模式：强制一行 */
+}
+
+.exam-mode-input .input-wrapper {
+    display: none; 
+}
+
+/* 考试模式下，两个按钮平分宽度 */
+.exam-mode-input #show-hide-btn,
+.exam-mode-input #check-btn {
+    flex: 1;
+    width: auto;
+    margin: 0;
+    height: 46px;
+    border-radius: 15px; /* 全部圆角 */
+    order: 0; /* 恢复默认顺序 */
+}
 
 .feedback { height: 20px; font-weight: bold; margin-top: 10px; font-size: 0.9rem; }
 .correct { color: #66bb6a; }
@@ -318,17 +327,16 @@ h1 {
 .learning-controls { 
     display: flex; 
     flex-direction: column; 
-    /* 优化: 减少间距 */
     gap: 8px; 
 }
 .feedback-btns { display: flex; gap: 10px; justify-content: center; }
 .action-btn {
     border: none; 
-    /* 优化: 减少垂直内边距 */
     padding: 10px 20px; 
     border-radius: 15px;
     font-size: 1rem; font-weight: bold; cursor: pointer;
-    transition: transform 0.1s; box-shadow: 0 4px 0 rgba(0,0,0,0.1); width: 100%;
+    transition: transform 0.1s; box-shadow: 0 4px 0 rgba(0,0,0,0.1); 
+    box-sizing: border-box; /* 确保padding不撑开宽度 */
 }
 .action-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.1); }
 .secondary { background-color: #fff; color: #8d6e63; border: 2px solid #efebe9; }
