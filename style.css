@@ -1,4 +1,4 @@
-/* style.css - 修复版 (Bug Fixes: #4) */
+/* style.css - 修正版 (为适应移动端键盘，减少垂直间距) */
 
 /* --- 全局设置 --- */
 :root {
@@ -45,27 +45,27 @@ body {
 
 /* 🔥 Fix #4: 头部布局改为 Flex，防止标题与返回按钮重叠 */
 header { 
-    position: relative; /* 为绝对定位的子元素提供锚点 */
+    position: relative;
     width: 100%;
     display: flex;
-    justify-content: center; /* 标题居中 */
-    align-items: center;     /* 垂直居中 */
+    justify-content: center;
+    align-items: center;
     min-height: 50px;
-    padding: 0 50px;         /* 左右留出空间给返回按钮，防止文字遮挡 */
-    box-sizing: border-box;  /* padding 包含在宽度内 */
+    padding: 0 50px;
+    box-sizing: border-box;
     text-align: center;
 }
 
 /* 返回按钮 */
 .back-btn {
     position: absolute;
-    left: 0;           /* 固定在左侧 */
+    left: 0;
     top: 50%;
-    transform: translateY(-50%); /* 垂直精准居中 */
+    transform: translateY(-50%);
     font-size: 1.5rem;
     text-decoration: none;
     line-height: 1;
-    padding: 10px;    /* 增加点击区域 */
+    padding: 10px;
     cursor: pointer;
     transition: transform 0.2s;
 }
@@ -78,7 +78,7 @@ h1 {
     font-family: 'Zcool KuaiLe', cursive;
     color: #fff;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    font-size: 1.8em; /* 稍微缩小一点，适配移动端 */
+    font-size: 1.8em;
     margin: 0;
     line-height: 1.2;
 }
@@ -113,7 +113,8 @@ h1 {
 .word-card {
     background: var(--card-bg);
     width: 100%;
-    padding: 30px 25px;
+    /* 优化: 减少垂直内边距，缩短卡片高度 */
+    padding: 20px 20px;
     border-radius: 25px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     text-align: center;
@@ -135,7 +136,7 @@ h1 {
     font-size: 2.2em;
     color: #5d4037;
     margin: 0;
-    word-break: break-word; /* 防止长单词撑破布局 */
+    word-break: break-word;
 }
 
 .icon-btn {
@@ -147,7 +148,7 @@ h1 {
     font-size: 1.2rem;
     cursor: pointer;
     transition: all 0.2s;
-    flex-shrink: 0; /* 防止被压缩 */
+    flex-shrink: 0;
 }
 
 .icon-btn:hover { transform: scale(1.1); background: #ffcdd2; }
@@ -166,7 +167,8 @@ h1 {
 .divider {
     height: 2px;
     background: #fce4ec;
-    margin: 20px 40px;
+    /* 优化: 减少垂直外边距 */
+    margin: 15px 30px;
     border-radius: 2px;
 }
 
@@ -176,8 +178,9 @@ h1 {
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px; 
-    margin: 10px 0 20px 0;
-    min-height: 60px;
+    /* 优化: 减少底部外边距，缩短高度 */
+    margin: 10px 0 15px 0;
+    min-height: 50px;
     cursor: text; 
     position: relative; 
 }
@@ -202,9 +205,11 @@ h1 {
 
 .char-slot {
     width: 30px;
-    height: 40px;
+    /* 优化: 减少高度 */
+    height: 35px;
     border-bottom: 3px solid var(--slot-border);
-    font-size: 24px;
+    /* 优化: 减少字体大小 */
+    font-size: 20px;
     font-weight: bold;
     color: var(--text-color);
     display: flex;
@@ -216,7 +221,8 @@ h1 {
 
 .space-slot {
     width: 20px;
-    height: 40px;
+    /* 优化: 减少高度 */
+    height: 35px;
     border-bottom: none; 
 }
 
@@ -227,12 +233,16 @@ h1 {
 /* --- 释义区域 --- */
 .definition-box {
     background-color: #fff8e1;
-    padding: 15px;
+    /* 优化: 减少内边距和底部外边距 */
+    padding: 12px;
     border-radius: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     text-align: left;
 }
-.def-item { margin-bottom: 10px; }
+.def-item { 
+    /* 优化: 减少元素间距 */
+    margin-bottom: 8px; 
+}
 .tag {
     background-color: var(--primary-color);
     color: white;
@@ -242,7 +252,12 @@ h1 {
     margin-right: 5px;
     font-weight: bold;
 }
-.definition-box p { margin: 5px 0 0 0; line-height: 1.5; font-size: 1rem; }
+.definition-box p { 
+    /* 优化: 减少顶部外边距和行高 */
+    margin: 3px 0 0 0; 
+    line-height: 1.4; 
+    font-size: 0.95rem; /* 稍微缩小字体 */
+}
 
 /* --- 输入控制区域 --- */
 .typing-area {
@@ -300,10 +315,18 @@ h1 {
 .incorrect { color: #ef5350; }
 
 .controls-container { width: 100%; }
-.learning-controls { display: flex; flex-direction: column; gap: 10px; }
+.learning-controls { 
+    display: flex; 
+    flex-direction: column; 
+    /* 优化: 减少间距 */
+    gap: 8px; 
+}
 .feedback-btns { display: flex; gap: 10px; justify-content: center; }
 .action-btn {
-    border: none; padding: 12px 20px; border-radius: 15px;
+    border: none; 
+    /* 优化: 减少垂直内边距 */
+    padding: 10px 20px; 
+    border-radius: 15px;
     font-size: 1rem; font-weight: bold; cursor: pointer;
     transition: transform 0.1s; box-shadow: 0 4px 0 rgba(0,0,0,0.1); width: 100%;
 }
