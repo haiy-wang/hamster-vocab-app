@@ -1,4 +1,4 @@
-/* script.js - Final Fixed Version (Layout + Space Logic) */
+/* script.js - Final Fixed Version with Celebration */
 
 // ================================
 // 0. 初始化 & 词库加载
@@ -51,6 +51,8 @@ let unlearnedIndices = loadProgress();
 let currentWordIndex = -1;
 let isExamMode = false;
 let isSpeaking = false;
+// 🔥 新增：连续答对计数
+let consecutiveCorrectCount = 0;
 
 // ================================
 // 3. DOM 元素
@@ -77,6 +79,8 @@ const modeToggleBtn = document.getElementById('mode-toggle-btn');
 const modeText = document.getElementById('mode-text');
 const examInput = document.getElementById('exam-input');
 const studyInput = document.getElementById('study-input');
+// 🔥 新增：庆祝遮罩层元素
+const celebrationOverlay = document.getElementById('celebration-overlay');
 
 document.querySelector('h1').textContent = `🐹 ${bookData.name}`;
 
@@ -124,21 +128,18 @@ function toggleMode() {
     examInput.value = '';
     studyInput.value = '';
     feedbackMessage.textContent = '';
+    // 🔥 切换模式时重置连续答对计数
+    consecutiveCorrectCount = 0;
 
     if (isExamMode) {
         modeToggleBtn.classList.replace('study-active', 'exam-active');
         modeText.textContent = "📝 考试模式";
-        
-        // 配合 CSS 的并排布局，简化文案
         showHideBtn.textContent = "🔑 看答案";
-        
         typingSection.classList.add('exam-mode-input');
     } else {
         modeToggleBtn.classList.replace('exam-active', 'study-active');
         modeText.textContent = "📚 学习模式";
-        
         showHideBtn.textContent = "👀 偷看答案";
-        
         typingSection.classList.remove('exam-mode-input');
     }
     loadWord();
@@ -160,7 +161,6 @@ function loadWord() {
     currentWordIndex = pickNextWord();
     const word = wordList[currentWordIndex];
 
-    // 公共区域
     chineseDefinitionEl.textContent = word.chinese;
     exampleSentenceEl.textContent = word.example || '';
     progressInfoEl.textContent = `🐹 进度: ${wordList.length - unlearnedIndices.length} / ${wordList.length}`;
@@ -210,52 +210,102 @@ function renderSlots() {
 
     for (const ch of wordList[currentWordIndex].word) {
         const span = document.createElement('span');
-        // 根据字符是否为空格分配 class
         span.className = ch === ' ' ? 'space-slot' : 'char-slot';
         slotsContainer.appendChild(span);
     }
 }
 
 function updateSlotsUI(val) {
-    // 只选取字母槽 (.char-slot)，跳过空格槽
-    // 这样输入的连续字母会自动跳过空格显示
     const slots = slotsContainer.querySelectorAll('.char-slot');
     slots.forEach((s, i) => s.textContent = val[i] || '');
 }
 
 // ================================
-// 9. 判断输入
+// 9. 判断输入 (核心逻辑修改)
 // ================================
 function checkTyping() {
-    // 🔥 修复点 1: 获取正确答案，移除所有空格
     const correct = wordList[currentWordIndex].word.toLowerCase().replace(/\s+/g, '');
-    
     const input = isExamMode ? examInput : studyInput;
-    // 🔥 修复点 2: 获取用户输入，也移除所有空格 (容错处理)
     const user = input.value.toLowerCase().replace(/\s+/g, '');
 
     if (user === correct) {
         feedbackMessage.textContent = "✨ 答对啦！";
         playAudio();
         
-        // 触发撒花特效 (如果 index.html 引入了库)
-        if (typeof confetti === 'function') {
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
+        // 🔥🔥 核心修改：考试模式连续答对处理 🔥🔥
+        if (isExamMode) {
+            consecutiveCorrectCount++;
+            console.log("当前连续答对:", consecutiveCorrectCount); // 用于调试
+
+            if (consecutiveCorrectCount === 10) {
+                triggerCelebration();
+                // 触发后重置，以便进行下一个10连击
+                consecutiveCorrectCount = 0;
+            }
+        }
+        // 🔥🔥 结束核心修改 🔥🔥
+
+        // 普通撒花
+        if (typeof confetti === 'function' && consecutiveCorrectCount !== 10) {
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         }
 
         setTimeout(handleKnow, 1000);
     } else {
         feedbackMessage.textContent = "💨 不对哦，再试一次！";
         input.focus();
+        // 🔥 答错时，如果是考试模式，重置计数
+        if (isExamMode) {
+            consecutiveCorrectCount = 0;
+        }
     }
 }
 
 // ================================
-// 10. 我放弃（考试模式专用）
+// 10. 🔥 新增：触发庆祝动画函数 🔥
+// ================================
+function triggerCelebration() {
+    // 1. 显示遮罩层 (移除 hidden, 添加 show 来触发过渡)
+    celebrationOverlay.classList.remove('hidden');
+    // 使用 setTimeout 确保浏览器先移除 hidden，再添加 show，从而产生动画
+    setTimeout(() => {
+        celebrationOverlay.classList.add('show');
+    }, 10);
+    
+    // 2. 触发更热烈的撒花
+    if (typeof confetti === 'function') {
+        var duration = 3000;
+        var animationEnd = Date.now() + duration;
+        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+        function randomInRange(min, max) {
+          return Math.random() * (max - min) + min;
+        }
+
+        var interval = setInterval(function() {
+          var timeLeft = animationEnd - Date.now();
+          if (timeLeft <= 0) {
+            return clearInterval(interval);
+          }
+          var particleCount = 50 * (timeLeft / duration);
+          confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+          confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+        }, 250);
+    }
+
+    // 3. 3秒后自动隐藏
+    setTimeout(() => {
+        celebrationOverlay.classList.remove('show');
+        // 等待 CSS 过渡完成后再添加 hidden
+        setTimeout(() => {
+            celebrationOverlay.classList.add('hidden');
+        }, 500); 
+    }, 3000);
+}
+
+
+// ================================
+// 11. 我放弃（考试模式专用）
 // ================================
 function giveUpInExamMode() {
     currentWordEl.style.display = 'block';
@@ -267,14 +317,16 @@ function giveUpInExamMode() {
 
     slotsContainer.classList.add('hidden');
     feedbackMessage.textContent = "📖 看一下答案，下次一定行！";
+    
+    // 🔥 放弃也算中断连胜
+    consecutiveCorrectCount = 0;
 
     playAudio();
-
     setTimeout(handleDontKnow, 3000);
 }
 
 // ================================
-// 11. 学习状态
+// 12. 学习状态
 // ================================
 function handleKnow() {
     unlearnedIndices = unlearnedIndices.filter(i => i !== currentWordIndex);
@@ -295,16 +347,18 @@ function finishLearning() {
 }
 
 // ================================
-// 12. 重置
+// 13. 重置
 // ================================
 function resetLearning() {
     unlearnedIndices = Array.from({ length: wordList.length }, (_, i) => i);
+    // 🔥 重置时清空计数
+    consecutiveCorrectCount = 0;
     saveProgress();
     loadWord();
 }
 
 // ================================
-// 13. 事件绑定
+// 14. 事件绑定
 // ================================
 modeToggleBtn.addEventListener('click', toggleMode);
 
@@ -319,25 +373,19 @@ resetBtn.addEventListener('click', resetLearning);
 playAudioBtn.addEventListener('click', playAudio);
 checkBtn.addEventListener('click', checkTyping);
 
-// 🔥 修复点 3: 考试输入框监听逻辑修正
 examInput.addEventListener('input', e => {
-    // 强制移除用户输入的空格，防止占用字符槽
     const val = e.target.value.replace(/\s+/g, '');
-    
-    // 如果发现有空格被移除了，同步更新 input 的值
     if (e.target.value !== val) {
         e.target.value = val;
     }
-    
     updateSlotsUI(val);
 });
 
-// 监听回车键提交
 examInput.addEventListener('keydown', e => e.key === 'Enter' && checkTyping());
 studyInput.addEventListener('keydown', e => e.key === 'Enter' && checkTyping());
 
 // ================================
-// 14. 启动
+// 15. 启动
 // ================================
 document.addEventListener('DOMContentLoaded', () => {
     initSpeech();
