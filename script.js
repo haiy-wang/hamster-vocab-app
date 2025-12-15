@@ -173,16 +173,21 @@ function loadWord() {
 }
 
 function renderStudyMode(word) {
-    currentWordEl.style.display = 'block';
-    currentWordEl.textContent = word.word;
-    phoneticsEl.textContent = word.phonetics;
-    phoneticsEl.style.visibility = 'visible';
-    playAudioBtn.style.visibility = 'visible';
+    currentWordEl.style.display = 'none';
+    
+    definitionSectionEl.classList.remove('hidden');
+    exampleBox.classList.add('hidden');
+    
+    phoneticsEl.style.visibility = 'hidden';
+    playAudioBtn.style.visibility = 'hidden';
 
-    definitionSectionEl.classList.add('hidden');
-    exampleBox.classList.remove('hidden');
-    slotsContainer.classList.add('hidden');
-    feedbackBtns.classList.remove('hidden');
+    dshowHideBtn.textContent = "🔑 看答案"; // <-- 新增或确保
+    
+    slotsContainer.classList.remove('hidden');
+    renderSlots();
+    
+    feedbackBtns.classList.add('hidden');
+    setTimeout(() => examInput.focus(), 50);
 }
 
 function renderExamMode(word) {
@@ -391,3 +396,4 @@ document.addEventListener('DOMContentLoaded', () => {
     initSpeech();
     loadWord();
 });
+
