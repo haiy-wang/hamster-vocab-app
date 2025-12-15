@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>🐹 词汇表 - 仓鼠单词本</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Zcool+KuaiLe&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="books.css" />
+</head>
+<body>
+
+<div class="overlay"></div>
+
+<div class="app-container">
+  <header>
+    <h1>🐹 仓鼠单词本</h1>
+    <p class="subtitle">我的词汇宝库</p>
+  </header>
+
+  <div class="book-list" id="bookList">
+      </div>
+
+  <div class="action-bar">
+      <button class="import-btn" onclick="openImport()">
+        <span class="icon">➕</span> 导入新词库
+      </button>
+      <input type="file" id="importInput" accept=".json" />
+  </div>
+
+</div>
+
+<script src="books.js"></script>
+</body>
+</html>
