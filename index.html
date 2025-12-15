@@ -15,17 +15,19 @@
 
     <div class="app-container">
         <header>
+            <a href="books.html" class="back-btn">👈</a>
             <h1>🐹 仓鼠单词本</h1>
-            <div class="mode-switch-container">
-                <button id="mode-toggle-btn" class="mode-btn study-active">
-                    <span id="mode-text">📚 学习模式</span>
-                </button>
-            </div>
-            <p class="progress-badge" id="progress-info">加载中...</p>
         </header>
+        
+        <div class="mode-switch-container">
+            <button id="mode-toggle-btn" class="mode-btn study-active">
+                <span id="mode-text">📚 学习模式</span>
+            </button>
+        </div>
+        
+        <p class="progress-badge" id="progress-info">加载中...</p>
 
         <div id="word-card" class="word-card">
-            
             <div class="word-header">
                 <h2 id="current-word">Loading...</h2>
                 <button id="play-audio-btn" class="icon-btn" title="听听发音">🔊</button>
@@ -37,7 +39,7 @@
 
             <div id="slots-container" class="slots-container hidden">
                 <input type="text" id="exam-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                </div>
+            </div>
 
             <div id="definition-section" class="definition-box hidden">
                 <div class="def-item" id="chinese-box">
