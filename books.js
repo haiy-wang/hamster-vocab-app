@@ -1,3 +1,6 @@
+(() => {
+'use strict';
+
 /* books.js - 优化版 */
 const BOOK_PREFIX = "wordbook_";
 const PROGRESS_PREFIX = "hamster_progress_";
@@ -179,3 +182,5 @@ document.addEventListener("DOMContentLoaded", () => {
   const importInput = document.getElementById("importInput");
   if (importInput) importInput.addEventListener("change", handleImportFile);
 });
+
+})();
