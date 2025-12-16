@@ -1,3 +1,6 @@
+(() => {
+'use strict';
+
 /* script.js - Final Fixed Version with Celebration */
 
 // ================================
@@ -51,6 +54,8 @@ let unlearnedIndices = loadProgress();
 let currentWordIndex = -1;
 let isExamMode = false;
 let isSpeaking = false;
+let isBusy = false; // 防止快速连点造成状态错乱
+
 // 🔥 新增：连续答对计数
 let consecutiveCorrectCount = 0;
 
@@ -82,7 +87,16 @@ const studyInput = document.getElementById('study-input');
 // 🔥 新增：庆祝遮罩层元素
 const celebrationOverlay = document.getElementById('celebration-overlay');
 
-document.querySelector('h1').textContent = `🐹 ${bookData.name}`;
+// ✅ DOM 安全检查：如果页面结构不完整，直接退出以避免报错
+const REQUIRED = [currentWordEl, chineseDefinitionEl, exampleSentenceEl, phoneticsEl, definitionSectionEl, showHideBtn, knowBtn, dontKnowBtn, resetBtn, playAudioBtn, checkBtn, progressInfoEl, feedbackMessage, modeToggleBtn, examInput, studyInput];
+if (REQUIRED.some(el => !el)) {
+    console.warn('[hamster] 缺少必要 DOM 元素，script.js 已跳过执行');
+    return;
+}
+
+
+const titleEl = document.querySelector('h1');
+if (titleEl) titleEl.textContent = `🐹 ${bookData.name}`;
 
 // ================================
 // 4. SpeechSynthesis 初始化
@@ -124,6 +138,10 @@ function playAudio() {
 // 6. 模式切换
 // ================================
 function toggleMode() {
+    if (isBusy) return;
+    isBusy = true;
+    setTimeout(() => { isBusy = false; }, 80);
+
     isExamMode = !isExamMode;
     examInput.value = '';
     studyInput.value = '';
@@ -181,7 +199,7 @@ function renderStudyMode(word) {
     phoneticsEl.style.visibility = 'hidden';
     playAudioBtn.style.visibility = 'hidden';
 
-    dshowHideBtn.textContent = "🔑 看答案"; // <-- 新增或确保
+    showHideBtn.textContent = "🔑 看答案"; // <-- 新增或确保
     
     slotsContainer.classList.remove('hidden');
     renderSlots();
@@ -229,6 +247,10 @@ function updateSlotsUI(val) {
 // 9. 判断输入 (核心逻辑修改)
 // ================================
 function checkTyping() {
+    if (isBusy) return;
+    isBusy = true;
+    setTimeout(() => { isBusy = false; }, 80);
+
     const correct = wordList[currentWordIndex].word.toLowerCase().replace(/\s+/g, '');
     const input = isExamMode ? examInput : studyInput;
     const user = input.value.toLowerCase().replace(/\s+/g, '');
@@ -334,12 +356,20 @@ function giveUpInExamMode() {
 // 12. 学习状态
 // ================================
 function handleKnow() {
+    if (isBusy) return;
+    isBusy = true;
+    setTimeout(() => { isBusy = false; }, 80);
+
     unlearnedIndices = unlearnedIndices.filter(i => i !== currentWordIndex);
     saveProgress();
     loadWord();
 }
 
 function handleDontKnow() {
+    if (isBusy) return;
+    isBusy = true;
+    setTimeout(() => { isBusy = false; }, 80);
+
     loadWord();
 }
 
@@ -397,3 +427,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadWord();
 });
 
+
+
+})();
