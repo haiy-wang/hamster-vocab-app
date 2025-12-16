@@ -59,23 +59,29 @@
                 </div>
             </div>
 
-            <div id="typing-section" class="typing-area">
-                <div class="input-wrapper">
-                    <input type="text" id="study-input" placeholder="试着拼写一下..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                </div>
+            <div id="typing-section" class="typing-area hidden">
+                <div class="input-wrapper" style="display:none;"></div> 
                 <button id="show-hide-btn" class="action-btn secondary">👀 偷看答案</button>
                 <button id="check-btn">提交</button>
             </div>
+            
             <p id="feedback-message" class="feedback"></p>
         </div>
 
         <div class="controls-container">
-            <div id="learning-controls" class="learning-controls">
+            
+            <div id="flashcard-nav" class="flashcard-nav hidden">
+                <button id="prev-btn" class="action-btn secondary">👈 上一个</button>
+                <button id="next-btn" class="action-btn secondary">下一个 👉</button>
+            </div>
+
+            <div id="learning-controls" class="learning-controls hidden">
                 <div class="feedback-btns" id="feedback-btns">
                     <button id="dont-know-btn" class="action-btn danger">❌ 还不熟</button>
                     <button id="know-btn" class="action-btn success">✔️ 记住啦</button>
                 </div>
             </div>
+
             <button id="reset-btn" class="action-btn primary hidden">🔄 再来一轮！</button>
         </div>
     </div>
@@ -84,4 +90,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
