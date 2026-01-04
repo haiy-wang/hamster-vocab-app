@@ -1,0 +1,559 @@
+{
+  "id": "grade_6_sem_2",
+  "name": "六年级下学期",
+  "description": "Nothing",
+  "words": [
+    {
+      "word": "younger",
+      "chinese": "（young 的比较级）更年轻的",
+      "phonetics": "/ˈjʌŋɡə/",
+      "example": "My sister is younger than me."
+    },
+    {
+      "word": "older",
+      "chinese": "（old 的比较级）更年长的",
+      "phonetics": "/ˈəʊldə/",
+      "example": "My grandpa is older than my dad."
+    },
+    {
+      "word": "taller",
+      "chinese": "（tall 的比较级）更高的",
+      "phonetics": "/ˈtɔːlə/",
+      "example": "He is taller than his brother."
+    },
+    {
+      "word": "shorter",
+      "chinese": "（short 的比较级）更矮的；更短的",
+      "phonetics": "/ˈʃɔːtə/",
+      "example": "This ruler is shorter than that one."
+    },
+    {
+      "word": "longer",
+      "chinese": "（long 的比较级）更长的",
+      "phonetics": "/ˈlɒŋɡə/",
+      "example": "The river is longer than the stream."
+    },
+    {
+      "word": "thinner",
+      "chinese": "（thin 的比较级）更瘦的",
+      "phonetics": "/ˈθɪnə/",
+      "example": "She is thinner than before."
+    },
+    {
+      "word": "heavier",
+      "chinese": "（heavy 的比较级）更重的",
+      "phonetics": "/ˈheviə/",
+      "example": "This bag is heavier than that one."
+    },
+    {
+      "word": "bigger",
+      "chinese": "（big 的比较级）更大的",
+      "phonetics": "/ˈbɪɡə/",
+      "example": "This room is bigger than my room."
+    },
+    {
+      "word": "smaller",
+      "chinese": "（small 的比较级）更小的",
+      "phonetics": "/ˈsmɔːlə/",
+      "example": "A mouse is smaller than a cat."
+    },
+    {
+      "word": "stronger",
+      "chinese": "（strong 的比较级）更强壮的",
+      "phonetics": "/ˈstrɒŋɡə/",
+      "example": "He is stronger than me."
+    },
+    {
+      "word": "dinosaur",
+      "chinese": "恐龙",
+      "phonetics": "/ˈdaɪnəsɔː/",
+      "example": "I saw a dinosaur in the museum."
+    },
+    {
+      "word": "hall",
+      "chinese": "大厅",
+      "phonetics": "/hɔːl/",
+      "example": "We met in the school hall."
+    },
+    {
+      "word": "metre",
+      "chinese": "米（英式）",
+      "phonetics": "/ˈmiːtə/",
+      "example": "The desk is one metre long."
+    },
+    {
+      "word": "meter",
+      "chinese": "米（美式）",
+      "phonetics": "/ˈmiːtər/",
+      "example": "The desk is one meter long."
+    },
+    {
+      "word": "than",
+      "chinese": "比",
+      "phonetics": "/ðæn/",
+      "example": "She is taller than me."
+    },
+    {
+      "word": "both",
+      "chinese": "两个都",
+      "phonetics": "/bəʊθ/",
+      "example": "Both boys like football."
+    },
+    {
+      "word": "kilogram",
+      "chinese": "千克；公斤",
+      "phonetics": "/ˈkɪləɡræm/",
+      "example": "The apples are one kilogram."
+    },
+    {
+      "word": "countryside",
+      "chinese": "乡村",
+      "phonetics": "/ˈkʌntrisaɪd/",
+      "example": "We live in the countryside."
+    },
+    {
+      "word": "lower",
+      "chinese": "（low 的比较级）更低的",
+      "phonetics": "/ˈləʊə/",
+      "example": "The box is lower than the table."
+    },
+    {
+      "word": "shadow",
+      "chinese": "阴影；影子",
+      "phonetics": "/ˈʃædəʊ/",
+      "example": "I can see my shadow."
+    },
+    {
+      "word": "smarter",
+      "chinese": "（smart 的比较级）更聪明的",
+      "phonetics": "/ˈsmɑːtə/",
+      "example": "She is smarter than her brother."
+    },
+    {
+      "word": "become",
+      "chinese": "开始变得；变成",
+      "phonetics": "/bɪˈkʌm/",
+      "example": "I want to become a doctor."
+    },
+    {
+      "word": "cleaned",
+      "chinese": "（clean 的过去式）打扫",
+      "phonetics": "/kliːnd/",
+      "example": "I cleaned my room yesterday."
+    },
+    {
+      "word": "stayed",
+      "chinese": "（stay 的过去式）待着；停留",
+      "phonetics": "/steɪd/",
+      "example": "We stayed at home last night."
+    },
+    {
+      "word": "washed",
+      "chinese": "（wash 的过去式）洗",
+      "phonetics": "/wɒʃt/",
+      "example": "He washed his hands."
+    },
+    {
+      "word": "watched",
+      "chinese": "（watch 的过去式）看",
+      "phonetics": "/wɒtʃt/",
+      "example": "They watched a movie."
+    },
+    {
+      "word": "had",
+      "chinese": "（have 的过去式）患病；得病",
+      "phonetics": "/hæd/",
+      "example": "I had a fever last week."
+    },
+    {
+      "word": "had a cold",
+      "chinese": "感冒",
+      "phonetics": "/hæd ə kəʊld/",
+      "example": "I had a cold yesterday."
+    },
+    {
+      "word": "slept",
+      "chinese": "（sleep 的过去式）睡觉",
+      "phonetics": "/slept/",
+      "example": "I slept early last night."
+    },
+    {
+      "word": "read",
+      "chinese": "（read 的过去式）读",
+      "phonetics": "/red/",
+      "example": "I read a story yesterday."
+    },
+    {
+      "word": "saw",
+      "chinese": "（see 的过去式）看见",
+      "phonetics": "/sɔː/",
+      "example": "I saw a bird in the tree."
+    },
+    {
+      "word": "last",
+      "chinese": "最后的；上一个的",
+      "phonetics": "/lɑːst/",
+      "example": "This is the last question."
+    },
+    {
+      "word": "yesterday",
+      "chinese": "昨天",
+      "phonetics": "/ˈjestədeɪ/",
+      "example": "I went to the park yesterday."
+    },
+    {
+      "word": "before",
+      "chinese": "在……之前",
+      "phonetics": "/bɪˈfɔː/",
+      "example": "Wash your hands before dinner."
+    },
+    {
+      "word": "drank",
+      "chinese": "（drink 的过去式）喝",
+      "phonetics": "/dræŋk/",
+      "example": "He drank some milk."
+    },
+    {
+      "word": "show",
+      "chinese": "演出",
+      "phonetics": "/ʃəʊ/",
+      "example": "We watched a school show."
+    },
+    {
+      "word": "magazine",
+      "chinese": "杂志",
+      "phonetics": "/ˌmæɡəˈziːn/",
+      "example": "I read a magazine."
+    },
+    {
+      "word": "better",
+      "chinese": "（well 的比较级）更好的",
+      "phonetics": "/ˈbetə/",
+      "example": "Today is better than yesterday."
+    },
+    {
+      "word": "faster",
+      "chinese": "更快的",
+      "phonetics": "/ˈfɑːstə/",
+      "example": "A car is faster than a bike."
+    },
+    {
+      "word": "hotel",
+      "chinese": "旅馆",
+      "phonetics": "/həʊˈtel/",
+      "example": "We stayed in a hotel."
+    },
+    {
+      "word": "fixed",
+      "chinese": "（fix 的过去分词）修理",
+      "phonetics": "/fɪkst/",
+      "example": "Dad fixed my bike."
+    },
+    {
+      "word": "broken",
+      "chinese": "（break 的过去分词）损坏的",
+      "phonetics": "/ˈbrəʊkən/",
+      "example": "The toy is broken."
+    },
+    {
+      "word": "lamp",
+      "chinese": "台灯",
+      "phonetics": "/læmp/",
+      "example": "Turn on the lamp."
+    },
+    {
+      "word": "loud",
+      "chinese": "喧闹的；大声的",
+      "phonetics": "/laʊd/",
+      "example": "The music is too loud."
+    },
+    {
+      "word": "enjoy",
+      "chinese": "享受……乐趣；喜爱",
+      "phonetics": "/ɪnˈdʒɔɪ/",
+      "example": "I enjoy reading books."
+    },
+    {
+      "word": "stay",
+      "chinese": "暂住；逗留",
+      "phonetics": "/steɪ/",
+      "example": "Please stay here."
+    },
+    {
+      "word": "went",
+      "chinese": "（go 的过去式）去",
+      "phonetics": "/went/",
+      "example": "I went to school by bus."
+    },
+    {
+      "word": "camp",
+      "chinese": "野营",
+      "phonetics": "/kæmp/",
+      "example": "We camp near the lake."
+    },
+    {
+      "word": "went camping",
+      "chinese": "（尤指在假日）野营",
+      "phonetics": "/went ˈkæmpɪŋ/",
+      "example": "We went camping last weekend."
+    },
+    {
+      "word": "fish",
+      "chinese": "钓鱼；捕鱼",
+      "phonetics": "/fɪʃ/",
+      "example": "We can fish in the river."
+    },
+    {
+      "word": "went fishing",
+      "chinese": "去钓鱼",
+      "phonetics": "/went ˈfɪʃɪŋ/",
+      "example": "He went fishing yesterday."
+    },
+    {
+      "word": "rode",
+      "chinese": "（ride 的过去式）骑（马）；骑车",
+      "phonetics": "/rəʊd/",
+      "example": "She rode her bike to school."
+    },
+    {
+      "word": "hurt",
+      "chinese": "（hurt 的过去式）使（受）伤",
+      "phonetics": "/hɜːt/",
+      "example": "I hurt my knee."
+    },
+    {
+      "word": "ate",
+      "chinese": "吃",
+      "phonetics": "/et/",
+      "example": "We ate lunch at noon."
+    },
+    {
+      "word": "took",
+      "chinese": "（take 的过去式）拍照",
+      "phonetics": "/tʊk/",
+      "example": "He took my book."
+    },
+    {
+      "word": "took pictures",
+      "chinese": "照相",
+      "phonetics": "/tʊk ˈpɪktʃəz/",
+      "example": "We took pictures in the park."
+    },
+    {
+      "word": "bought",
+      "chinese": "（buy 的过去式）买",
+      "phonetics": "/bɔːt/",
+      "example": "I bought a new pen."
+    },
+    {
+      "word": "gift",
+      "chinese": "礼物",
+      "phonetics": "/ɡɪft/",
+      "example": "This is a gift for you."
+    },
+    {
+      "word": "fell",
+      "chinese": "（fall 的过去式）摔倒",
+      "phonetics": "/fel/",
+      "example": "He fell off the bike."
+    },
+    {
+      "word": "off",
+      "chinese": "（某处）落下",
+      "phonetics": "/ɒf/",
+      "example": "The book fell off the desk."
+    },
+    {
+      "word": "Labour Day",
+      "chinese": "劳动节",
+      "phonetics": "/ˈleɪbə deɪ/",
+      "example": "We have a holiday on Labour Day."
+    },
+    {
+      "word": "mule",
+      "chinese": "骡子",
+      "phonetics": "/mjuːl/",
+      "example": "The mule carried the bags."
+    },
+    {
+      "word": "Turpan",
+      "chinese": "吐鲁番",
+      "phonetics": "/ˈtʊəpæn/",
+      "example": "My family visited Turpan."
+    },
+    {
+      "word": "could",
+      "chinese": "（can 的过去式）能",
+      "phonetics": "/kʊd/",
+      "example": "I could swim when I was six."
+    },
+    {
+      "word": "ill",
+      "chinese": "生病的",
+      "phonetics": "/ɪl/",
+      "example": "She is ill today."
+    },
+    {
+      "word": "beach",
+      "chinese": "海滩；沙滩",
+      "phonetics": "/biːtʃ/",
+      "example": "We played on the beach."
+    },
+    {
+      "word": "basket",
+      "chinese": "篮；筐",
+      "phonetics": "/ˈbɑːskɪt/",
+      "example": "Put the apples in the basket."
+    },
+    {
+      "word": "part",
+      "chinese": "部分",
+      "phonetics": "/pɑːt/",
+      "example": "This is my favourite part."
+    },
+    {
+      "word": "liked",
+      "chinese": "（like 的过去式）喜欢",
+      "phonetics": "/laɪkt/",
+      "example": "I liked the story."
+    },
+    {
+      "word": "laughed",
+      "chinese": "（laugh 的过去式）笑",
+      "phonetics": "/lɑːft/",
+      "example": "We laughed a lot."
+    },
+    {
+      "word": "dining hall",
+      "chinese": "饭厅",
+      "phonetics": "/ˈdaɪnɪŋ hɔːl/",
+      "example": "We eat in the dining hall."
+    },
+    {
+      "word": "grass",
+      "chinese": "草地",
+      "phonetics": "/ɡrɑːs/",
+      "example": "Don't walk on the grass."
+    },
+    {
+      "word": "gym",
+      "chinese": "体育馆",
+      "phonetics": "/dʒɪm/",
+      "example": "We play basketball in the gym."
+    },
+    {
+      "word": "ago",
+      "chinese": "以前",
+      "phonetics": "/əˈɡəʊ/",
+      "example": "I moved here two years ago."
+    },
+    {
+      "word": "cycling",
+      "chinese": "骑自行车运动（或活动）",
+      "phonetics": "/ˈsaɪklɪŋ/",
+      "example": "Cycling is good exercise."
+    },
+    {
+      "word": "go cycling",
+      "chinese": "去骑自行车",
+      "phonetics": "/ɡəʊ ˈsaɪklɪŋ/",
+      "example": "Let's go cycling after school."
+    },
+    {
+      "word": "ice skate",
+      "chinese": "滑冰",
+      "phonetics": "/aɪs skeɪt/",
+      "example": "I can ice-skate on the lake."
+    },
+    {
+      "word": "badminton",
+      "chinese": "羽毛球运动",
+      "phonetics": "/ˈbædmɪntən/",
+      "example": "We play badminton on Fridays."
+    },
+    {
+      "word": "star",
+      "chinese": "星",
+      "phonetics": "/stɑː/",
+      "example": "I can see a star."
+    },
+    {
+      "word": "easy",
+      "chinese": "容易的",
+      "phonetics": "/ˈiːzi/",
+      "example": "This game is easy."
+    },
+    {
+      "word": "look up",
+      "chinese": "查阅",
+      "phonetics": "/lʊk ʌp/",
+      "example": "Look up the word in the dictionary."
+    },
+    {
+      "word": "Internet",
+      "chinese": "互联网",
+      "phonetics": "/ˈɪntənet/",
+      "example": "I use the Internet every day."
+    },
+    {
+      "word": "different",
+      "chinese": "不同的",
+      "phonetics": "/ˈdɪfrənt/",
+      "example": "We have different books."
+    },
+    {
+      "word": "active",
+      "chinese": "积极的；活跃的",
+      "phonetics": "/ˈæktɪv/",
+      "example": "He is active in class."
+    },
+    {
+      "word": "race",
+      "chinese": "赛跑",
+      "phonetics": "/reɪs/",
+      "example": "They had a race."
+    },
+    {
+      "word": "nothing",
+      "chinese": "没有什么",
+      "phonetics": "/ˈnʌθɪŋ/",
+      "example": "There is nothing in the box."
+    },
+    {
+      "word": "thought",
+      "chinese": "（think 的过去式）想",
+      "phonetics": "/θɔːt/",
+      "example": "I thought about my answer."
+    },
+    {
+      "word": "felt",
+      "chinese": "（feel 的过去式）感觉",
+      "phonetics": "/felt/",
+      "example": "I felt happy today."
+    },
+    {
+      "word": "cheetah",
+      "chinese": "猎豹",
+      "phonetics": "/ˈtʃiːtə/",
+      "example": "A cheetah runs fast."
+    },
+    {
+      "word": "trip",
+      "chinese": "旅行",
+      "phonetics": "/trɪp/",
+      "example": "We had a nice trip."
+    },
+    {
+      "word": "woke",
+      "chinese": "（wake 的过去式）醒",
+      "phonetics": "/wəʊk/",
+      "example": "I woke up early."
+    },
+    {
+      "word": "dream",
+      "chinese": "梦",
+      "phonetics": "/driːm/",
+      "example": "I had a funny dream."
+    }
+  ]
+}
